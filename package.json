@@ -1,0 +1,24 @@
+{
+  "name": "Awesome",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build-dev": "browserify -e app/App.js -t reactify -o dist/bundle.js",
+    "build-product": "browserify -e app/App.js -t reactify -t uglifyify -o dist/bundle.min.js",
+    "start": "node_modules/.bin/gulp"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {
+    "browserify": "^9.0.3",
+    "gulp": "^3.8.11",
+    "gulp-less": "^3.0.1",
+    "material-ui": "^0.7.1",
+    "react": "^0.12.2",
+    "react-tap-event-plugin": "^0.1.4",
+    "reactify": "^1.1.0",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}

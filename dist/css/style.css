@@ -1,0 +1,31 @@
+@import url(icons.css);
+body {
+  font-family: Roboto, sans-serif; }
+
+#header {
+  padding: 1rem; }
+  #header .logo a span {
+    background: url('../imgs/logo_framgia.png');
+    display: inline-block;
+    width: 13.4rem;
+    height: 4rem; }
+  #header .user-info {
+    line-height: 4rem;
+    color: #f44336;
+    font-weight: bold; }
+
+#top-nav .tool-bar {
+  background: #e53935;
+  line-height: 5.6rem;
+  color: #FFF;
+  font-size: 1.6rem; }
+  #top-nav .tool-bar .search {
+    font-weight: bold; }
+    #top-nav .tool-bar .search .result-number {
+      padding: 0 0 0 1rem;
+      display: inline-block; }
+  #top-nav .tool-bar .mui-font-icon {
+    color: #ffebee;
+    padding-left: 0;
+    font-weight: lighter;
+    font-size: 1.6rem; }

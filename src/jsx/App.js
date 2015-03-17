@@ -1,18 +1,16 @@
 var React = require('react'),
-    Button = require('./components/Button'),
-    NavBar = require('./components/Toolbar'),
-    Dropdown = require('./components/Dropdown');
+    Header = require('./components/Header'),
+    Navigation = require('./components/Navigation');
 
 var Wrapper = React.createClass({
     render: function() {
         return (
             <div id="wrapper">
-                <h1>Welcome</h1>
-                <NavBar />
-                <Button />
-                <Dropdown />
+                <Header />
+                <div className="u-cf"></div>
+                <Navigation />
             </div>
-        )
+        );
     }
 });
 

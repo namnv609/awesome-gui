@@ -19,7 +19,7 @@ var srcDir = './src',
             src: srcDir + '/jsx',
             dest: destDir + '/js',
             get watch() {
-                return this.src + '/App.js'
+                return this.src + '/**/*.js'
             }
         },
         compass: {
@@ -27,7 +27,7 @@ var srcDir = './src',
             dest: destDir + '',
             configFile: '',
             get watch() {
-                return this.src + '/**.sass'
+                return [this.src + '/**.sass']
             }
         }
     },
@@ -55,7 +55,10 @@ gulp.task('jsx', function() {
 });
 
 gulp.task('sass', function() {
-    gulp.src(configs.sass.src + '/*.sass')
+    gulp.src([
+            configs.sass.src + '/*.sass',
+            '!' + configs.sass.src + '/color_palette.sass'
+        ])
         .pipe(sass({
             indentedSyntax: true
         }))

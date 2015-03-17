@@ -1,25 +1,24 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var React = require('react'),
-    Button = require('./components/Button'),
-    NavBar = require('./components/Toolbar'),
-    Dropdown = require('./components/Dropdown');
+    Header = require('./components/Header'),
+    Navigation = require('./components/Navigation');
 
 var Wrapper = React.createClass({displayName: "Wrapper",
     render: function() {
         return (
             React.createElement("div", {id: "wrapper"}, 
-                React.createElement("h1", null, "Welcome"), 
-                React.createElement(NavBar, null), 
-                React.createElement(Button, null), 
-                React.createElement(Dropdown, null)
+                React.createElement(Header, null), 
+                React.createElement("div", {className: "u-cf"}), 
+                React.createElement(Navigation, null)
             )
-        )
+        );
     }
 });
 
 React.render(React.createElement(Wrapper, null), document.body);
 
-},{"./components/Button":233,"./components/Dropdown":234,"./components/Toolbar":235,"react":232}],2:[function(require,module,exports){
+
+},{"./components/Header":233,"./components/Navigation":234,"react":232}],2:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -25671,78 +25670,63 @@ module.exports = warning;
 module.exports = require('./lib/React');
 
 },{"./lib/React":101}],233:[function(require,module,exports){
-var React = require('react'),
-    mui = require('material-ui'),
-    RaisedButton = mui.RaisedButton,
-    FontIcon = mui.FontIcon;
+var React = require('react');
 
-var Button = React.createClass({displayName: "Button",
+var Header = React.createClass({displayName: "Header",
     render: function() {
         return (
-            React.createElement("div", {class: "example-page"}, 
-                React.createElement(RaisedButton, {secondary: true}, 
-                    React.createElement("span", {className: "mui-raised-button-label example-image-button"}, "Choose an Image"), 
-                    React.createElement("input", {type: "file", id: "imageButton", className: "example-image-input"})
+            React.createElement("div", {id: "header"}, 
+                React.createElement("div", {className: "logo u-pull-left"}, 
+                    React.createElement("a", {href: "index.html"}, React.createElement("span", null))
+                ), 
+                React.createElement("div", {className: "user-info u-pull-right"}, 
+                    "loremipsumdolor@sitamet.com"
                 )
             )
         );
     }
 });
 
-module.exports = Button;
+module.exports = Header;
 
-
-},{"material-ui":3,"react":232}],234:[function(require,module,exports){
-var React = require('react'),
-    mui = require('material-ui'),
-    DropDownMenu = mui.DropDownMenu;
-
-    var menuItems = [
-       { payload: '1', text: 'Never' },
-       { payload: '2', text: 'Every Night' },
-       { payload: '3', text: 'Weeknights' },
-       { payload: '4', text: 'Weekends' },
-       { payload: '5', text: 'Weekly' },
-    ];
-var Dropdown = React.createClass({displayName: "Dropdown",
-    render: function() {
-        return (
-
-            React.createElement(DropDownMenu, {menuItems: menuItems})
-        );
-    }
-});
-
-module.exports = Dropdown;
-
-},{"material-ui":3,"react":232}],235:[function(require,module,exports){
+},{"react":232}],234:[function(require,module,exports){
 var React = require('react'),
     mui = require('material-ui'),
     Toolbar = mui.Toolbar,
     ToolbarGroup = mui.ToolbarGroup,
-    DropDownIcon = mui.DropDownIcon,
+    TextField = mui.TextField,
     FontIcon = mui.FontIcon;
 
-var iconMenuItems = [
-    { payload: '1', text: 'Download' },
-    { payload: '2', text: 'More Info' }
-];
-
-var NavBar = React.createClass({displayName: "NavBar",
+var Navigation = React.createClass({displayName: "Navigation",
+    handleSearchButton: function() {
+        alert('䏦ふ韥 䛨じゅぐ㫣觊 盥ば䛧黨さ かも');
+    },
+    handleMenuButton: function() {
+        alert(' り婧 かもまぽヂョ 尦す䣥ニュは 穞り婧 覧䋧');
+    },
     render: function() {
         return (
-            React.createElement(Toolbar, null, 
-                React.createElement(ToolbarGroup, {key: 0, float: "right"}, 
-                    React.createElement(FontIcon, {className: "mui-icon-pie"}), 
-                    React.createElement(FontIcon, {className: "mui-icon-sort"}), 
-                    React.createElement("span", {className: "mui-toolbar-separator"}, " "), 
-                    React.createElement(DropDownIcon, {iconClassName: "icon-navigation-expand-more", menuItems: iconMenuItems})
+            React.createElement("div", {id: "top-nav"}, 
+                React.createElement(Toolbar, {className: "tool-bar row"}, 
+                    React.createElement(ToolbarGroup, {className: "eight columns"}, 
+                        React.createElement("div", {className: "search u-pull-left"}, 
+                            React.createElement(FontIcon, {className: "icon-search", onClick: this.handleSearchButton}), 
+                            React.createElement("span", {className: "result-number"}, "4"), "文"
+                        ), 
+                        React.createElement("div", {className: "sort-order u-pull-right"}, 
+                            "䏦ふ: 韥 䛨じ"
+                        )
+                    ), 
+                    React.createElement(ToolbarGroup, {className: "four columns"}, 
+                        React.createElement("span", {className: "mui-toolbar-separator"}), 
+                        React.createElement(FontIcon, {className: "icon-menu u-pull-right", onClick: this.handleMenuButton})
+                    )
                 )
             )
         );
     }
 });
 
-module.exports = NavBar;
+module.exports = Navigation;
 
 },{"material-ui":3,"react":232}]},{},[1]);

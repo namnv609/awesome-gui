@@ -1,15 +1,16 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var React = require('react'),
-    Main = require('./Main'),
-    NavBar = require('./Toolbar'),
-    Dropdown = require('./Dropdown');
+    Button = require('./components/Button'),
+    NavBar = require('./components/Toolbar'),
+    Dropdown = require('./components/Dropdown');
 
 var Wrapper = React.createClass({displayName: "Wrapper",
     render: function() {
         return (
             React.createElement("div", {id: "wrapper"}, 
+                React.createElement("h1", null, "Welcome"), 
                 React.createElement(NavBar, null), 
-                React.createElement(Main, null), 
+                React.createElement(Button, null), 
                 React.createElement(Dropdown, null)
             )
         )
@@ -18,7 +19,7 @@ var Wrapper = React.createClass({displayName: "Wrapper",
 
 React.render(React.createElement(Wrapper, null), document.body);
 
-},{"./Dropdown":233,"./Main":234,"./Toolbar":235,"react":232}],2:[function(require,module,exports){
+},{"./components/Button":233,"./components/Dropdown":234,"./components/Toolbar":235,"react":232}],2:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -25672,6 +25673,28 @@ module.exports = require('./lib/React');
 },{"./lib/React":101}],233:[function(require,module,exports){
 var React = require('react'),
     mui = require('material-ui'),
+    RaisedButton = mui.RaisedButton,
+    FontIcon = mui.FontIcon;
+
+var Button = React.createClass({displayName: "Button",
+    render: function() {
+        return (
+            React.createElement("div", {class: "example-page"}, 
+                React.createElement(RaisedButton, {secondary: true}, 
+                    React.createElement("span", {className: "mui-raised-button-label example-image-button"}, "Choose an Image"), 
+                    React.createElement("input", {type: "file", id: "imageButton", className: "example-image-input"})
+                )
+            )
+        );
+    }
+});
+
+module.exports = Button;
+
+
+},{"material-ui":3,"react":232}],234:[function(require,module,exports){
+var React = require('react'),
+    mui = require('material-ui'),
     DropDownMenu = mui.DropDownMenu;
 
     var menuItems = [
@@ -25691,32 +25714,6 @@ var Dropdown = React.createClass({displayName: "Dropdown",
 });
 
 module.exports = Dropdown;
-
-},{"material-ui":3,"react":232}],234:[function(require,module,exports){
-var React = require('react'),
-    MUI = require('material-ui'),
-    RaisedButton = MUI.RaisedButton,
-    FontIcon = MUI.FontIcon,
-    TextField = MUI.TextField;
-
-var Main = React.createClass({displayName: "Main",
-    render: function() {
-        return (
-            React.createElement("div", {class: "example-page"}, 
-                React.createElement("h1", null, "Material UI"), 
-                React.createElement("h2", null, "Example project"), 
-                React.createElement(RaisedButton, {linkButton: true, href: "https://github.com/callemall/material-ui", secondary: true}, 
-                    React.createElement(FontIcon, {className: "muidocs-icon-custom-github example-button-icon"}), 
-                    React.createElement("span", {className: "mui-raised-button-label example-icon-button-label"}, "Github")
-                ), 
-                React.createElement(TextField, {hintText: "wahhht", floatingLabelText: "Fuqqqqq"})
-            )
-        );
-    }
-});
-
-module.exports = Main;
-
 
 },{"material-ui":3,"react":232}],235:[function(require,module,exports){
 var React = require('react'),

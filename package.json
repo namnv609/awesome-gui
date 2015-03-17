@@ -4,9 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build-dev": "browserify -e app/App.js -t reactify -o dist/bundle.js",
-    "build-product": "browserify -e app/App.js -t reactify -t uglifyify -o dist/bundle.min.js",
-    "start": "node_modules/.bin/gulp"
+    "build-dev": "node_modules/.bin/gulp"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +13,7 @@
     "browserify": "^9.0.3",
     "gulp": "^3.8.11",
     "gulp-less": "^3.0.1",
+    "gulp-sass": "^1.3.3",
     "material-ui": "^0.7.1",
     "react": "^0.12.2",
     "react-tap-event-plugin": "^0.1.4",

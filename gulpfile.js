@@ -23,9 +23,9 @@ var srcDir = './src',
             }
         },
         compass: {
-            src: srcDir + '',
-            dest: destDir + '',
-            configFile: '',
+            src: srcDir + '/sass',
+            dest: destDir + '/css',
+            configFile: srcDir + '/sass/config.rb',
             get watch() {
                 return [this.src + '/**.sass']
             }
@@ -35,8 +35,8 @@ var srcDir = './src',
     less = require('gulp-less'),
     browserify = require('browserify'),
     reactify = require('reactify'),
-    sass = require('gulp-sass'),
-    // compass = require('gulp-compass'),
+    // sass = require('gulp-sass'),
+    compass = require('gulp-compass'),
     source = require('vinyl-source-stream');
 
 gulp.task('less', function() {
@@ -54,33 +54,37 @@ gulp.task('jsx', function() {
         .pipe(gulp.dest(configs.jsx.dest));
 });
 
-gulp.task('sass', function() {
-    gulp.src([
-            configs.sass.src + '/*.sass',
-            '!' + configs.sass.src + '/color_palette.sass'
-        ])
-        .pipe(sass({
-            indentedSyntax: true
-        }))
-        .pipe(gulp.dest(configs.sass.dest));
-});
+/** For SASS. Uncomment if needed */
+// gulp.task('sass', function() {
+//     gulp.src([
+//             configs.sass.src + '/*.sass',
+//             '!' + configs.sass.src + '/color_palette.sass'
+//         ])
+//         .pipe(sass({
+//             indentedSyntax: true
+//         }))
+//         .pipe(gulp.dest(configs.sass.dest));
+// });
 
 /** For compass. Uncomment if needed */
-/*gulp.task('compass', function() {
-    gulp.src(configs.compass.src)
+gulp.task('compass', function() {
+    gulp.src([
+            configs.compass.src + '/*.sass',
+            '!' + configs.compass.src + '/color_palette.sass'
+        ])
         .pipe(compass({
             config_file: configs.compass.configFile,
-            css: '',
-            sass: ''
+            sass: configs.compass.src,
+            css: configs.compass.dist
         }))
         .pipe(gulp.dest(configs.compass.dest));
-});*/
+});
 
 gulp.task('watch', function() {
     gulp.watch(configs.less.watch, ['less']);
-    gulp.watch(configs.sass.watch, ['sass']);
+    // gulp.watch(configs.sass.watch, ['sass']);
     gulp.watch(configs.jsx.watch, ['jsx']);
-    // gulp.watch(configs.compass.watch, ['compass']);
+    gulp.watch(configs.compass.watch, ['compass']);
 });
 
-gulp.task('default', ['less', 'jsx', 'sass', 'watch']);
+gulp.task('default', ['less', 'jsx', 'compass', 'watch']);

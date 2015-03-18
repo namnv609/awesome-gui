@@ -10,6 +10,7 @@ var Header = React.createClass({
                 <div className="user-info u-pull-right">
                     loremipsumdolor@sitamet.com
                 </div>
+                <div className="u-cf"></div>
             </div>
         );
     }

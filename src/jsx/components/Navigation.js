@@ -30,6 +30,7 @@ var Navigation = React.createClass({
                         <FontIcon className="icon-menu u-pull-right" onClick={this.handleMenuButton} />
                     </ToolbarGroup>
                 </Toolbar>
+                <div className="u-cf"></div>
             </div>
         );
     }

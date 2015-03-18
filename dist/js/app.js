@@ -1,15 +1,18 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var React = require('react'),
     Header = require('./components/Header'),
-    Navigation = require('./components/Navigation');
+    Navigation = require('./components/Navigation'),
+    CandidateList = require('./components/CandidateList'),
+    FWDialog = require('./components/FWDialog');
 
 var Wrapper = React.createClass({displayName: "Wrapper",
     render: function() {
         return (
             React.createElement("div", {id: "wrapper"}, 
                 React.createElement(Header, null), 
-                React.createElement("div", {className: "u-cf"}), 
-                React.createElement(Navigation, null)
+                React.createElement(Navigation, null), 
+                React.createElement(CandidateList, null), 
+                React.createElement(FWDialog, {title: "ル゜갣饥 獤覌 蟥きゅキ"})
             )
         );
     }
@@ -18,7 +21,7 @@ var Wrapper = React.createClass({displayName: "Wrapper",
 React.render(React.createElement(Wrapper, null), document.body);
 
 
-},{"./components/Header":233,"./components/Navigation":234,"react":232}],2:[function(require,module,exports){
+},{"./components/CandidateList":233,"./components/FWDialog":234,"./components/Header":235,"./components/Navigation":236,"react":232}],2:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -25670,6 +25673,153 @@ module.exports = warning;
 module.exports = require('./lib/React');
 
 },{"./lib/React":101}],233:[function(require,module,exports){
+var React = require('react'),
+    mui = require('material-ui'),
+    FontIcon = mui.FontIcon;
+
+var CandidateList = React.createClass({displayName: "CandidateList",
+    render: function() {
+        return (
+            React.createElement(CandidateCard, null)
+        );
+    }
+});
+
+var CandidateCard = React.createClass({displayName: "CandidateCard",
+    getInitialState: function() {
+        return {
+            sampleData: []
+        }
+    },
+    componentDidMount: function () {
+        this.setState({
+            sampleData: [
+                {
+                    name: 'Amumu',
+                    info: '階ゆ 䋤ばた 楺秞こめ䦦 壃壎礯䩵る',
+                    gender: 'male'
+                },
+                {
+                    name: 'Leblanc',
+                    info: '樦楦 つ囤にゅ韦マ みょ姚勣難ド',
+                    gender: 'female'
+                },
+                {
+                    name: 'Lee Sin',
+                    info: '階ゆ 䋤ばた 楺秞こめ䦦 壃壎礯䩵る',
+                    gender: 'male'
+                },
+                {
+                    name: 'Happy Feet',
+                    info: '樦楦 つ囤にゅ韦マ みょ姚勣難ド',
+                    gender: 'female'
+                }
+            ]
+        });
+    },
+    render: function() {
+        var CandidateNode = this.state.sampleData.map(function(data, idx) {
+            var inlineStyle = {
+                backgroundImage: 'url(./dist/imgs/profile/' + idx + '.jpg)'
+            };
+            return (
+                React.createElement("div", {className: "candidate-card three columns"}, 
+                    React.createElement("div", {className: "candidate-picture", style: inlineStyle}), 
+                    React.createElement("div", {className: "candidate-name"}, 
+                         data.name
+                    ), 
+                    React.createElement("div", {className: "candidate-general"}, 
+                        React.createElement("p", {className:  data.gender}, 
+                            "00000", idx, " / Male / 23yr"
+                        ), 
+                        React.createElement("p", {className: "university"}, 
+                            "Tokyo"
+                        )
+                    ), 
+                    React.createElement("div", {className: "candidate-skills"}, 
+                        React.createElement("p", null, 
+                            React.createElement("span", null, "階ゆ"), 
+                            React.createElement("span", null, "58.0")
+                        ), 
+                        React.createElement("p", null, 
+                            React.createElement("span", null, "階ゆ"), 
+                            React.createElement("span", null, "58.0")
+                        ), 
+                        React.createElement("p", null, 
+                            React.createElement("span", null, "階ゆ"), 
+                            React.createElement("span", null, "58.0")
+                        ), 
+                        React.createElement("p", null, 
+                            React.createElement("span", null, "階ゆ"), 
+                            React.createElement("span", null, "58.0")
+                        ), 
+                        React.createElement("div", {className: "u-cf"})
+                    ), 
+                    React.createElement("div", {className: "candidate-tags"}, 
+                        React.createElement("span", null, "Tag 01"), 
+                        React.createElement("span", null, "Tag 02"), 
+                        React.createElement("span", null, "Tag 03"), 
+                        React.createElement("span", null, "Tag 04"), 
+                        React.createElement("span", null, "Tag 05"), 
+                        React.createElement("span", null, "Tag 06")
+                    ), 
+                    React.createElement("div", {className: "candidate-extra"}, 
+                        React.createElement("span", null, 
+                            React.createElement("i", {className: "icon-briefcase"}), " 2015/03"
+                        ), " ~", 
+                        React.createElement("span", null, 
+                            React.createElement("i", {className: "icon-history"}), " 1 hour ago"
+                        )
+                    )
+                )
+            );
+        });
+
+        return (
+            React.createElement("div", {id: "candidate-list", className: "row"}, 
+                 CandidateNode 
+            )
+        );
+    }
+});
+
+module.exports = CandidateList;
+
+
+},{"material-ui":3,"react":232}],234:[function(require,module,exports){
+/** FWDialog = Full Width Dialog **/
+
+var React = require('react'),
+    mui = require('material-ui');
+
+var FWDialog = React.createClass({displayName: "FWDialog",
+    closeDialog: function() {
+        alert('@@');
+    },
+    render: function() {
+        var dialogTitle = (typeof this.props.title !== "undefined") ? this.props.title : "Untitled";
+
+        return (
+            React.createElement("div", {id: "full-width-dialog", className: "u-full-width"}, 
+                React.createElement("div", {className: "dialog-title"}, 
+                    dialogTitle, 
+                    React.createElement("span", {className: "u-pull-right", onClick: this.closeDialog}, 
+                        React.createElement("i", {className: "icon-cross"})
+                    )
+                ), 
+                React.createElement("div", {className: "dialog-content row"}, 
+                    React.createElement("div", {className: "columns four"}, "01"), 
+                    React.createElement("div", {className: "columns four"}, "02"), 
+                    React.createElement("div", {className: "columns four"}, "03")
+                )
+            )
+        );
+    }
+});
+
+module.exports = FWDialog;
+
+},{"material-ui":3,"react":232}],235:[function(require,module,exports){
 var React = require('react');
 
 var Header = React.createClass({displayName: "Header",
@@ -25681,7 +25831,8 @@ var Header = React.createClass({displayName: "Header",
                 ), 
                 React.createElement("div", {className: "user-info u-pull-right"}, 
                     "loremipsumdolor@sitamet.com"
-                )
+                ), 
+                React.createElement("div", {className: "u-cf"})
             )
         );
     }
@@ -25689,7 +25840,7 @@ var Header = React.createClass({displayName: "Header",
 
 module.exports = Header;
 
-},{"react":232}],234:[function(require,module,exports){
+},{"react":232}],236:[function(require,module,exports){
 var React = require('react'),
     mui = require('material-ui'),
     Toolbar = mui.Toolbar,
@@ -25721,7 +25872,8 @@ var Navigation = React.createClass({displayName: "Navigation",
                         React.createElement("span", {className: "mui-toolbar-separator"}), 
                         React.createElement(FontIcon, {className: "icon-menu u-pull-right", onClick: this.handleMenuButton})
                     )
-                )
+                ), 
+                React.createElement("div", {className: "u-cf"})
             )
         );
     }

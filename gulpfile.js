@@ -40,7 +40,10 @@ var srcDir = './src',
     source = require('vinyl-source-stream');
 
 gulp.task('less', function() {
-    return gulp.src(configs.less.src + '/*.less')
+    return gulp.src([
+            configs.less.src + '/*.less',
+            '!' + configs.less.src + '/awesome_variables.less'
+        ])
         .pipe(less())
         .pipe(gulp.dest(configs.less.dest));
 });

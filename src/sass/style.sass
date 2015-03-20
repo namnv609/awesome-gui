@@ -10,9 +10,11 @@ div.section-title
     padding: .4rem 1rem
     font-weight: bold
     font-size: 1.4rem
-    // line-height: normal
-    // margin:
-    //     bottom: 0
+    color: $red-500
+
+.color-
+    &red
+        color: $red-600
 
 #header
     padding: 1rem
@@ -164,10 +166,12 @@ div.section-title
                 margin: 0
             .programing-languages
                 padding: 0 0 0 1.2rem
-                p
+                p,
+                div
                     color: $grey-500
                     margin: 0 0 0 0
-                    span
+                    span,
+                    p
                         display: inline-block
                         &:first-child
                             min-width: 40%
@@ -186,3 +190,56 @@ div.section-title
                 a
                     color: $red-500
                     margin: 0 .5rem
+        .form-search
+            @extend .candidate-addition-info
+            .form-dropdown
+                height: 2.6rem
+                max-width: 60%
+                .mui-menu-
+                    &label
+                        padding:
+                            left: 0
+                        line-height: 3.6rem
+                        color: $grey-900
+                    &drop-down-icon
+                        right: 0
+                        top: .6rem
+                    &control-underline
+                        border-color: $grey-900
+            .form-
+                &datepicker
+                    width: 55%
+                    display: inline-block
+                    div
+                        margin: auto
+                        color: $grey-900
+                    .mui-
+                        &transition-slide-in-child
+                            span
+                                &:first-child,
+                                &:last-child
+                                    min-width: inherit
+                                    max-width: inherit
+                        &text-field
+                            line-height: 0
+                            height: 3.2rem
+                            &-input
+                                padding: 0
+                                width: 165%
+                            &-underline
+                                width: 165%
+                                border-bottom-color: $grey-900
+                &slider
+                    width: 60%
+                    display: inline-block
+                    .mui-slider
+                        height: 0
+                        position: static
+                &textfield
+                    input[type=text]
+                        padding: 0
+                        &:focus
+                            border: 0
+            .icon-calendar
+                font-size: 1.2rem
+                color: $grey-900

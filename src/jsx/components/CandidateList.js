@@ -49,7 +49,10 @@ var CandidateCard = React.createClass({
             };
             return (
                 <div className="candidate-card three columns">
-                    <div className="candidate-picture" style={inlineStyle}></div>
+                    <div className="candidate-picture" style={inlineStyle}>
+                        <div className="candidate-score">705</div>
+                        <div className="candidate-bookmark-star">24</div>
+                    </div>
                     <div className="candidate-name">
                         { data.name }
                     </div>

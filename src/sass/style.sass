@@ -5,6 +5,15 @@
 body
     font-family: Roboto, sans-serif
 
+div.section-title
+    border-left: .5rem solid $red-600
+    padding: .4rem 1rem
+    font-weight: bold
+    font-size: 1.4rem
+    // line-height: normal
+    // margin:
+    //     bottom: 0
+
 #header
     padding: 1rem
     .logo
@@ -37,8 +46,12 @@ body
                 weight: lighter
                 size: 1.6rem
 
-#candidate-list
+#candidate-list,
+#full-width-dialog
     padding: 2rem 1rem
+    .no-border
+        border: 0 !important
+        +box-shadow(none !important)
     .candidate-card
         border: 1px solid $indigo-50
         +box-shadow($indigo-50 3px 3px 3px)
@@ -90,11 +103,15 @@ body
                         &:last-child
                             min-width: 35%
                             max-width: 35%
+                &-chart
+                    padding: 1rem
+                    text-align: center
             &tags
                 padding: 1rem .5rem
                 min-height: 5.6rem
                 max-height: 5.6rem
                 overflow: hidden
+                color: $grey-800
                 span
                     display: inline-block
                     padding: 0 .5rem
@@ -104,10 +121,19 @@ body
             &extra
                 text-align: center
                 margin: 1rem 0 0
+                color: $grey-700
                 span
                     font-size: 1.2rem
                     margin: 0 .3rem
                     display: inline-block
+            &score
+                position: relative
+                top: 0
+            &bookmark-star
+                position: relative
+                background: url(../imgs/bookmarked.png) no-repeat center center
+                bottom: -110px
+
 
 #full-width-dialog
     .dialog-title
@@ -122,3 +148,41 @@ body
             cursor: pointer
     .dialog-content
         padding: 1rem
+
+        .in-dialog
+            margin-top: 0
+            border-bottom: 0
+        .candidate-addition-info
+            padding: 0 1rem 2rem
+            color: $grey-500
+
+            p.sub-section-title
+                font:
+                    weight: bold
+                    size: 1.2rem
+                padding: 0 0 .6rem .6rem
+                margin: 0
+            .programing-languages
+                padding: 0 0 0 1.2rem
+                p
+                    color: $grey-500
+                    margin: 0 0 0 0
+                    span
+                        display: inline-block
+                        &:first-child
+                            min-width: 40%
+                            max-width: 40%
+                        &:last-child
+                            min-width: 60%
+                            max-width: 60%
+            .border-top
+                border-top: 1px solid $grey-600
+            .source-uploaded
+                padding: 0 0 0 1.2rem
+                p
+                    color: $grey-500
+                    margin: 0
+                    padding: 0
+                a
+                    color: $red-500
+                    margin: 0 .5rem

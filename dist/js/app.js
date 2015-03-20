@@ -25724,7 +25724,10 @@ var CandidateCard = React.createClass({displayName: "CandidateCard",
             };
             return (
                 React.createElement("div", {className: "candidate-card three columns"}, 
-                    React.createElement("div", {className: "candidate-picture", style: inlineStyle}), 
+                    React.createElement("div", {className: "candidate-picture", style: inlineStyle}, 
+                        React.createElement("div", {className: "candidate-score"}, "705"), 
+                        React.createElement("div", {className: "candidate-bookmark-star"}, "24")
+                    ), 
                     React.createElement("div", {className: "candidate-name"}, 
                          data.name
                     ), 
@@ -25792,12 +25795,51 @@ module.exports = CandidateList;
 var React = require('react'),
     mui = require('material-ui');
 
+var SkillsChart = React.createClass({displayName: "SkillsChart",
+    componentWillReceiveProps: function (nextProps) {
+        var canvas = document.getElementById('skillsCanvas').getContext('2d');
+        Chart.defaults.global.showTooltips = false;
+        Chart.defaults.global.responsive = false;
+
+        new Chart(canvas).Radar(nextProps.skills);
+    },
+    render: function() {
+        return (
+            React.createElement("canvas", {id: "skillsCanvas", width: "250", height: "250"})
+        )
+    }
+});
+
 var FWDialog = React.createClass({displayName: "FWDialog",
+    getInitialState: function () {
+        return {
+            skills: []  
+        };
+    },
+    componentDidMount: function () {
+        this.setState({
+            skills: {
+                labels: ["HTML", "JS", "jQuery", "Phalcon", "CSS", "ReactJS"],
+                datasets: [
+                    {
+                        fillColor : "rgba(255,0,0,0.2)",
+                        strokeColor : "#F00",
+                        pointColor : "#fff",
+                        pointStrokeColor : "#9DB86D",
+                        data: [55.3, 52.7, 55.3, 52.0, 54.7, 58.0]
+                    }
+                ]
+            }
+        });
+    },
     closeDialog: function() {
         alert('@@');
     },
     render: function() {
-        var dialogTitle = (typeof this.props.title !== "undefined") ? this.props.title : "Untitled";
+        var dialogTitle = this.props.title || "Untitled";
+        var candidateImage = {
+            backgroundImage: 'url(./dist/imgs/profile/0.jpg)'
+        };
 
         return (
             React.createElement("div", {id: "full-width-dialog", className: "u-full-width"}, 
@@ -25808,9 +25850,107 @@ var FWDialog = React.createClass({displayName: "FWDialog",
                     )
                 ), 
                 React.createElement("div", {className: "dialog-content row"}, 
-                    React.createElement("div", {className: "columns four"}, "01"), 
-                    React.createElement("div", {className: "columns four"}, "02"), 
-                    React.createElement("div", {className: "columns four"}, "03")
+                    React.createElement("div", {className: "columns four"}, 
+                        React.createElement("div", {className: "candidate-card no-border"}, 
+                            React.createElement("div", {className: "candidate-picture", style: candidateImage}, 
+                                React.createElement("div", {className: "candidate-score"}, "705"), 
+                                React.createElement("div", {className: "candidate-bookmark-star"}, "24")
+                            ), 
+                            React.createElement("div", {className: "candidate-name in-dialog"}, 
+                                "階ゆ"
+                            ), 
+                            React.createElement("div", {className: "candidate-general"}, 
+                                React.createElement("p", {className: "male"}, 
+                                    "000001 / Male / 23yr"
+                                ), 
+                                React.createElement("p", {className: "university"}, 
+                                    "Tokyo"
+                                )
+                            ), 
+                            React.createElement("div", {className: "candidate-skills-chart"}, 
+                                React.createElement(SkillsChart, {skills: this.state.skills})
+                            )
+                        )
+                    ), 
+                    React.createElement("div", {className: "columns four"}, 
+                        React.createElement("div", {className: "section-title"}, 
+                            "韥 䛨じ" 
+                        ), 
+                        React.createElement("div", {className: "candidate-addition-info"}, 
+                            "PHP, CSS, JavaScript"
+                        ), 
+                        React.createElement("div", {className: "section-title"}, 
+                            "IT - 大ぴちゅ窣栧"
+                        ), 
+                        React.createElement("div", {className: "candidate-addition-info"}, 
+                            React.createElement("p", {className: "sub-section-title"}, "Language"), 
+                            React.createElement("div", {className: "programing-languages border-top"}, 
+                                React.createElement("p", null, 
+                                    React.createElement("span", null, "Java"), 
+                                    React.createElement("span", null, "3yr")
+                                ), 
+                                React.createElement("p", null, 
+                                    React.createElement("span", null, "JS"), 
+                                    React.createElement("span", null, "3yr")
+                                ), 
+                                React.createElement("p", null, 
+                                    React.createElement("span", null, "CJS"), 
+                                    React.createElement("span", null, "3yr")
+                                ), 
+                                React.createElement("p", null, 
+                                    React.createElement("span", null, "HTML "), 
+                                    React.createElement("span", null, "3yr")
+                                )
+                            ), 
+                            React.createElement("p", {className: "sub-section-title"}, "Framework"), 
+                            React.createElement("div", {className: "programing-languages border-top"}, 
+                                React.createElement("p", null, 
+                                    "CakePHP"
+                                ), 
+                                React.createElement("p", null, 
+                                    "Kohana II"
+                                ), 
+                                React.createElement("p", null, 
+                                    "CodeIgniter"
+                                ), 
+                                React.createElement("p", null, 
+                                    "ASP.NET MVC 4" 
+                                )
+                            ), 
+                            React.createElement("p", {className: "sub-section-title"}, "OS"), 
+                            React.createElement("div", {className: "programing-languages border-top"}, 
+                                React.createElement("p", null, 
+                                    "Ubuntuu"
+                                ), 
+                                React.createElement("p", null, 
+                                    "Windows Server"
+                                )
+                            )
+                        ), 
+                        React.createElement("div", {className: "section-title"}, "File upload"), 
+                        React.createElement("div", {className: "candidate-addition-info"}, 
+                            React.createElement("div", {className: "source-uploaded"}, 
+                                React.createElement("p", null, 
+                                    "fibonacci.cpp", 
+                                    React.createElement("a", {href: "#", className: "icon-download3"})
+                                ), 
+                                React.createElement("p", null, 
+                                    "getting_started_with_react_js.pdf", 
+                                    React.createElement("a", {href: "#", className: "icon-download3"})
+                                )
+                            )
+                        )
+                    ), 
+                    React.createElement("div", {className: "columns four"}, 
+                        React.createElement("div", {className: "section-title"}, "Interview"), 
+                        React.createElement("div", {className: "candidate-addition-info"}), 
+                        "Lorem ipsum dolor sit amet, consectetur adipisicing elit.", React.createElement("br", null), 
+                        "Accusantium, ipsa et aut, atque vel voluptates possimus velit nulla aliquam officia reprehenderit voluptatum a amet quas, commodi!", React.createElement("br", null), 
+                        "Consectetur beatae minima perspiciatis.", React.createElement("br", null), 
+                        "Lorem ipsum dolor sit amet, consectetur adipisicing elit.", React.createElement("br", null), 
+                        "Accusantium, ipsa et aut, atque vel voluptates possimus velit nulla aliquam officia reprehenderit voluptatum a amet quas, commodi!", React.createElement("br", null), 
+                        "Consectetur beatae minima perspiciatis.", React.createElement("br", null)
+                    )
                 )
             )
         );

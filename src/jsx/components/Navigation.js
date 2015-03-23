@@ -3,7 +3,23 @@ var React = require('react'),
     Toolbar = mui.Toolbar,
     ToolbarGroup = mui.ToolbarGroup,
     TextField = mui.TextField,
-    FontIcon = mui.FontIcon;
+    FontIcon = mui.FontIcon,
+    SubMenu = require('./SubMenu');
+
+var candidates = [
+    {
+        name: 'lorem',
+        academic: 'Hanoi Aptech',
+        tags: 'HTML, CSS, JS, jQuery, HTML, CSS, JS, jQuery, HTML, CSS, JS, jQuery',
+        score: '570'
+    },
+    {
+        name: 'no name',
+        academic: 'IT Aptech',
+        tags: 'PHP, Java',
+        score: '355'
+    },
+];
 
 var Navigation = React.createClass({
     handleSearchButton: function() {

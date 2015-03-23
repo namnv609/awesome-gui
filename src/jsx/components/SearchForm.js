@@ -45,7 +45,7 @@ var SearchForm = React.createClass({
     render: function() {
         return (
             <div className="dialog-content row">
-                <div className="columns four">
+                <div className="columns six">
                     <div className="section-title">
                         IT - 大ぴちゅ窣栧
                     </div>
@@ -112,7 +112,7 @@ var SearchForm = React.createClass({
                         </div>
                     </div>
                 </div>
-                <div className="columns four">
+                <div className="columns six">
                     <div className="section-title">
                         IT - 大ぴちゅ窣栧
                     </div>

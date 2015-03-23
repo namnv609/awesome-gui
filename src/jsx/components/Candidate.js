@@ -49,7 +49,8 @@ var Candidate = React.createClass({
                     <div className="candidate-card no-border">
                         <div className="candidate-picture" style={candidateImage}>
                             <div className="candidate-score">705</div>
-                            <div className="candidate-bookmark-star">24</div>
+                            <div className="u-cf"></div>
+                            <div className="candidate-bookmark-star high-top">24</div>
                         </div>
                         <div className="candidate-name in-dialog">
                             階ゆ

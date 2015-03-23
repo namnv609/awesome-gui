@@ -7,6 +7,7 @@ var React = require('react'),
     FWDialog = require('./components/FWDialog'),
     Candidate = require('./components/Candidate'),
     SearchForm = require('./components/SearchForm');
+    /*SubMenu = require('./components/SubMenu');*/
 
 
 injectTapEventPlugin();
@@ -26259,7 +26260,8 @@ var Candidate = React.createClass({displayName: "Candidate",
                     React.createElement("div", {className: "candidate-card no-border"}, 
                         React.createElement("div", {className: "candidate-picture", style: candidateImage}, 
                             React.createElement("div", {className: "candidate-score"}, "705"), 
-                            React.createElement("div", {className: "candidate-bookmark-star"}, "24")
+                            React.createElement("div", {className: "u-cf"}), 
+                            React.createElement("div", {className: "candidate-bookmark-star high-top"}, "24")
                         ), 
                         React.createElement("div", {className: "candidate-name in-dialog"}, 
                             "階ゆ"
@@ -26416,7 +26418,11 @@ var CandidateCard = React.createClass({displayName: "CandidateCard",
             return (
                 React.createElement("div", {className: "candidate-card three columns"}, 
                     React.createElement("div", {className: "candidate-picture", style: inlineStyle}, 
-                        React.createElement("div", {className: "candidate-score"}, "705"), 
+                        React.createElement("div", {className: "candidate-bookmark-icon u-pull-right"}, 
+                            React.createElement(FontIcon, {className: "icon-star-full"})
+                        ), 
+                        React.createElement("div", {className: "candidate-score"}, "32"), 
+                        React.createElement("div", {className: "u-cf"}), 
                         React.createElement("div", {className: "candidate-bookmark-star"}, "24")
                     ), 
                     React.createElement("div", {className: "candidate-name"}, 
@@ -26536,7 +26542,23 @@ var React = require('react'),
     Toolbar = mui.Toolbar,
     ToolbarGroup = mui.ToolbarGroup,
     TextField = mui.TextField,
-    FontIcon = mui.FontIcon;
+    FontIcon = mui.FontIcon,
+    SubMenu = require('./SubMenu');
+
+var candidates = [
+    {
+        name: 'lorem',
+        academic: 'Hanoi Aptech',
+        tags: 'HTML, CSS, JS, jQuery, HTML, CSS, JS, jQuery, HTML, CSS, JS, jQuery',
+        score: '570'
+    },
+    {
+        name: 'no name',
+        academic: 'IT Aptech',
+        tags: 'PHP, Java',
+        score: '355'
+    },
+];
 
 var Navigation = React.createClass({displayName: "Navigation",
     handleSearchButton: function() {
@@ -26571,7 +26593,7 @@ var Navigation = React.createClass({displayName: "Navigation",
 
 module.exports = Navigation;
 
-},{"material-ui":3,"react":236}],242:[function(require,module,exports){
+},{"./SubMenu":243,"material-ui":3,"react":236}],242:[function(require,module,exports){
 var React = require('react'),
     mui = require('material-ui'),
     DropDownMenu = mui.DropDownMenu,
@@ -26619,7 +26641,7 @@ var SearchForm = React.createClass({displayName: "SearchForm",
     render: function() {
         return (
             React.createElement("div", {className: "dialog-content row"}, 
-                React.createElement("div", {className: "columns four"}, 
+                React.createElement("div", {className: "columns six"}, 
                     React.createElement("div", {className: "section-title"}, 
                         "IT - 大ぴちゅ窣栧"
                     ), 
@@ -26686,7 +26708,7 @@ var SearchForm = React.createClass({displayName: "SearchForm",
                         )
                     )
                 ), 
-                React.createElement("div", {className: "columns four"}, 
+                React.createElement("div", {className: "columns six"}, 
                     React.createElement("div", {className: "section-title"}, 
                         "IT - 大ぴちゅ窣栧"
                     ), 
@@ -26781,5 +26803,53 @@ var SearchForm = React.createClass({displayName: "SearchForm",
 });
 
 module.exports = SearchForm;
+
+},{"material-ui":3,"react":236}],243:[function(require,module,exports){
+var React = require('react'),
+    mui = require('material-ui'),
+    Tabs = mui.Tabs,
+    Tab = mui.Tab;
+
+var SubMenu = React.createClass({displayName: "SubMenu",
+    render: function() {
+        var candidates = this.props.candidates || [];
+        var Candidate = candidates.map(function(data, idx) {
+            var candidatePic = {
+                backgroundImage: 'url(./dist/imgs/profile/' + idx + '.jpg)'
+            };
+            return (
+                React.createElement("div", {className: "candidate-card row"}, 
+                    React.createElement("div", {className: "columns four"}, 
+                        React.createElement("div", {className: "score-bubble"}, data.score), 
+                        React.createElement("div", {className: "picture", style: candidatePic})
+                    ), 
+                    React.createElement("div", {className: "columns eight"}, 
+                        React.createElement("p", {className: "name"}, data.name), 
+                        React.createElement("p", {className: "academic"}, data.academic), 
+                        React.createElement("p", {className: "tags"}, data.tags)
+                    )
+                )
+            )
+        });
+        return (
+            React.createElement("div", {className: "four columns candidate-submenu"}, 
+                React.createElement(Tabs, null, 
+                    React.createElement(Tab, {label: "Tab 1"}, 
+                        React.createElement("div", {className: "tab-template-container"}, 
+                            Candidate
+                        )
+                    ), 
+                    React.createElement(Tab, {label: "Tab 2"}, 
+                        React.createElement("div", {className: "tab-template-container"}, 
+                            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam voluptatum eaque, vero cupiditate vitae. Dolorem, molestias, eos? Laudantium, itaque, sit. Libero eum consectetur odio, iste saepe dicta sint aspernatur molestiae."
+                        )
+                    )
+                )
+            )
+        );
+    }
+});
+
+module.exports = SubMenu;
 
 },{"material-ui":3,"react":236}]},{},[1]);

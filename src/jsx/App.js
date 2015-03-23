@@ -6,6 +6,7 @@ var React = require('react'),
     FWDialog = require('./components/FWDialog'),
     Candidate = require('./components/Candidate'),
     SearchForm = require('./components/SearchForm');
+    /*SubMenu = require('./components/SubMenu');*/
 
 
 injectTapEventPlugin();

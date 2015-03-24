@@ -6,24 +6,28 @@ var React = require('react'),
     FWDialog = require('./components/FWDialog'),
     Candidate = require('./components/Candidate'),
     SearchForm = require('./components/SearchForm');
-    /*SubMenu = require('./components/SubMenu');*/
 
 
 injectTapEventPlugin();
 
 var Wrapper = React.createClass({
+    getInitialState: function () {
+        return {
+            fwDialog: {}
+        };
+    },
+    componentDidMount: function () {
+        this.setState({
+            fwDialog: this.refs.fwDialog
+        });
+    },
     render: function() {
         return (
             <div id="wrapper">
                 <Header />
-                <Navigation />
-                <CandidateList />
-                <FWDialog title="ル゜갣饥 獤覌 蟥きゅキ">
-                    <Candidate />
-                </FWDialog>
-                <FWDialog title="Search form">
-                    <SearchForm />
-                </FWDialog>
+                <Navigation fwDialog={this.state.fwDialog} />
+                <CandidateList fwDialog={this.state.fwDialog} />
+                <FWDialog ref="fwDialog" title="ル゜갣饥 獤覌 蟥きゅキ" />
             </div>
         );
     }

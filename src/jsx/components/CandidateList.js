@@ -1,11 +1,22 @@
 var React = require('react'),
     mui = require('material-ui'),
-    FontIcon = mui.FontIcon;
+    FontIcon = mui.FontIcon,
+    Candidate = require('./Candidate');
 
 var CandidateList = React.createClass({
+    getInitialState: function () {
+        return {
+            fwDialog: {}  
+        };
+    },
+    componentWillReceiveProps: function (nextProps) {
+        this.setState({
+            fwDialog: nextProps.fwDialog
+        });
+    },
     render: function() {
         return (
-            <CandidateCard />
+            <CandidateCard fwDialog={this.state.fwDialog} />
         );
     }
 });
@@ -42,13 +53,18 @@ var CandidateCard = React.createClass({
             ]
         });
     },
+    onClickCandidateCard: function(idx) {
+        var fwDialog = this.props.fwDialog;
+        fwDialog.props.component = <Candidate />;
+        fwDialog.openDialog();
+    },
     render: function() {
         var CandidateNode = this.state.sampleData.map(function(data, idx) {
             var inlineStyle = {
                 backgroundImage: 'url(./dist/imgs/profile/' + idx + '.jpg)'
             };
             return (
-                <div className="candidate-card three columns">
+                <div className="candidate-card three columns" onClick={this.onClickCandidateCard.bind(this, idx)}>
                     <div className="candidate-picture" style={inlineStyle}>
                         <div className="candidate-bookmark-icon u-pull-right">
                             <FontIcon className="icon-star-full" />
@@ -105,7 +121,7 @@ var CandidateCard = React.createClass({
                     </div>
                 </div>
             );
-        });
+        }.bind(this));
 
         return (
             <div id="candidate-list" className="row">

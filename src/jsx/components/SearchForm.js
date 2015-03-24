@@ -39,8 +39,15 @@ var SearchForm = React.createClass({
                     payload: '3',
                     text: 'React JS'
                 }
-            ]
+            ],
+            slideAbc: 50
         };
+    },
+    onSlideChange: function() {
+        var myValue = this.refs.abc.getValue();
+        this.setState({
+            slideAbc: Math.round(myValue * 100)
+        })
     },
     render: function() {
         return (
@@ -142,9 +149,9 @@ var SearchForm = React.createClass({
                             <div>
                                 <span>Slide</span>
                                 <div className="row form-slider">
-                                    <div className="four columns color-red">獤䦪ち</div>
+                                    <div className="four columns color-red">~{this.state.slideAbc}</div>
                                     <div className="eight columns">
-                                        <Slider defaultValue={.5} />
+                                        <Slider defaultValue={.5} ref="abc" name="abc" onChange={this.onSlideChange.bind()} />
                                     </div>
                                 </div>
                             </div>

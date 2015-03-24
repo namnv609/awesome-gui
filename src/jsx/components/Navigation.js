@@ -4,7 +4,8 @@ var React = require('react'),
     ToolbarGroup = mui.ToolbarGroup,
     TextField = mui.TextField,
     FontIcon = mui.FontIcon,
-    SubMenu = require('./SubMenu');
+    SubMenu = require('./SubMenu'),
+    SearchForm = require('./SearchForm');
 
 var candidates = [
     {
@@ -22,11 +23,30 @@ var candidates = [
 ];
 
 var Navigation = React.createClass({
+    getInitialState: function () {
+        return {
+            fwDialog: {},
+            showSubMenu: false
+        };
+    },
+    componentWillReceiveProps: function (nextProps) {
+        this.setState({
+            fwDialog: nextProps.fwDialog
+        });
+    },
     handleSearchButton: function() {
-        alert('䏦ふ韥 䛨じゅぐ㫣觊 盥ば䛧黨さ かも');
+        this.state.fwDialog.props.component = <SearchForm />
+        this.state.fwDialog.openDialog();
     },
     handleMenuButton: function() {
-        alert(' り婧 かもまぽヂョ 尦す䣥ニュは 穞り婧 覧䋧');
+        var isShow = true;
+        if (this.state.showSubMenu) {
+            isShow = false;
+        }
+
+        this.setState({
+            showSubMenu: isShow
+        });
     },
     render: function() {
         return (
@@ -47,6 +67,7 @@ var Navigation = React.createClass({
                     </ToolbarGroup>
                 </Toolbar>
                 <div className="u-cf"></div>
+                <SubMenu candidates={candidates} show={this.state.showSubMenu} />
             </div>
         );
     }

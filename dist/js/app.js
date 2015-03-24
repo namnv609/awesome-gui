@@ -7,24 +7,28 @@ var React = require('react'),
     FWDialog = require('./components/FWDialog'),
     Candidate = require('./components/Candidate'),
     SearchForm = require('./components/SearchForm');
-    /*SubMenu = require('./components/SubMenu');*/
 
 
 injectTapEventPlugin();
 
 var Wrapper = React.createClass({displayName: "Wrapper",
+    getInitialState: function () {
+        return {
+            fwDialog: {}
+        };
+    },
+    componentDidMount: function () {
+        this.setState({
+            fwDialog: this.refs.fwDialog
+        });
+    },
     render: function() {
         return (
             React.createElement("div", {id: "wrapper"}, 
                 React.createElement(Header, null), 
-                React.createElement(Navigation, null), 
-                React.createElement(CandidateList, null), 
-                React.createElement(FWDialog, {title: "ル゜갣饥 獤覌 蟥きゅキ"}, 
-                    React.createElement(Candidate, null)
-                ), 
-                React.createElement(FWDialog, {title: "Search form"}, 
-                    React.createElement(SearchForm, null)
-                )
+                React.createElement(Navigation, {fwDialog: this.state.fwDialog}), 
+                React.createElement(CandidateList, {fwDialog: this.state.fwDialog}), 
+                React.createElement(FWDialog, {ref: "fwDialog", title: "ル゜갣饥 獤覌 蟥きゅキ"})
             )
         );
     }
@@ -26368,12 +26372,23 @@ module.exports = Candidate;
 },{"material-ui":3,"react":236}],238:[function(require,module,exports){
 var React = require('react'),
     mui = require('material-ui'),
-    FontIcon = mui.FontIcon;
+    FontIcon = mui.FontIcon,
+    Candidate = require('./Candidate');
 
 var CandidateList = React.createClass({displayName: "CandidateList",
+    getInitialState: function () {
+        return {
+            fwDialog: {}  
+        };
+    },
+    componentWillReceiveProps: function (nextProps) {
+        this.setState({
+            fwDialog: nextProps.fwDialog
+        });
+    },
     render: function() {
         return (
-            React.createElement(CandidateCard, null)
+            React.createElement(CandidateCard, {fwDialog: this.state.fwDialog})
         );
     }
 });
@@ -26410,13 +26425,18 @@ var CandidateCard = React.createClass({displayName: "CandidateCard",
             ]
         });
     },
+    onClickCandidateCard: function(idx) {
+        var fwDialog = this.props.fwDialog;
+        fwDialog.props.component = React.createElement(Candidate, null);
+        fwDialog.openDialog();
+    },
     render: function() {
         var CandidateNode = this.state.sampleData.map(function(data, idx) {
             var inlineStyle = {
                 backgroundImage: 'url(./dist/imgs/profile/' + idx + '.jpg)'
             };
             return (
-                React.createElement("div", {className: "candidate-card three columns"}, 
+                React.createElement("div", {className: "candidate-card three columns", onClick: this.onClickCandidateCard.bind(this, idx)}, 
                     React.createElement("div", {className: "candidate-picture", style: inlineStyle}, 
                         React.createElement("div", {className: "candidate-bookmark-icon u-pull-right"}, 
                             React.createElement(FontIcon, {className: "icon-star-full"})
@@ -26473,7 +26493,7 @@ var CandidateCard = React.createClass({displayName: "CandidateCard",
                     )
                 )
             );
-        });
+        }.bind(this));
 
         return (
             React.createElement("div", {id: "candidate-list", className: "row"}, 
@@ -26486,28 +26506,48 @@ var CandidateCard = React.createClass({displayName: "CandidateCard",
 module.exports = CandidateList;
 
 
-},{"material-ui":3,"react":236}],239:[function(require,module,exports){
+},{"./Candidate":237,"material-ui":3,"react":236}],239:[function(require,module,exports){
 /** FWDialog = Full Width Dialog **/
 
 var React = require('react'),
-    mui = require('material-ui');
+    mui = require('material-ui'),
+    SearchForm = require('./SearchForm');
 
 var FWDialog = React.createClass({displayName: "FWDialog",
+    getInitialState: function () {
+        return {
+            show: null  
+        };
+    },
+    openDialog: function() {
+        this.setState({
+            show: true
+        });
+    },
     closeDialog: function() {
-        alert('@@');
+        this.setState({
+            show: false
+        });
     },
     render: function() {
         var dialogTitle = this.props.title || "Untitled";
+        var className = "u-full-width";
+        var isShow = this.state.show || null;
+        var component = this.props.component || null;
+
+        if (this.state.show !== null) {
+            className += isShow ? " fadeInDown" : " fadeOutUp";
+        }
 
         return (
-            React.createElement("div", {id: "full-width-dialog", className: "u-full-width"}, 
+            React.createElement("div", {id: "full-width-dialog", className: className}, 
                 React.createElement("div", {className: "dialog-title"}, 
                     dialogTitle, 
                     React.createElement("span", {className: "u-pull-right", onClick: this.closeDialog}, 
                         React.createElement("i", {className: "icon-cross"})
                     )
                 ), 
-                this.props.children
+                component
             )
         );
     }
@@ -26515,7 +26555,7 @@ var FWDialog = React.createClass({displayName: "FWDialog",
 
 module.exports = FWDialog;
 
-},{"material-ui":3,"react":236}],240:[function(require,module,exports){
+},{"./SearchForm":242,"material-ui":3,"react":236}],240:[function(require,module,exports){
 var React = require('react');
 
 var Header = React.createClass({displayName: "Header",
@@ -26543,7 +26583,8 @@ var React = require('react'),
     ToolbarGroup = mui.ToolbarGroup,
     TextField = mui.TextField,
     FontIcon = mui.FontIcon,
-    SubMenu = require('./SubMenu');
+    SubMenu = require('./SubMenu'),
+    SearchForm = require('./SearchForm');
 
 var candidates = [
     {
@@ -26561,11 +26602,30 @@ var candidates = [
 ];
 
 var Navigation = React.createClass({displayName: "Navigation",
+    getInitialState: function () {
+        return {
+            fwDialog: {},
+            showSubMenu: false
+        };
+    },
+    componentWillReceiveProps: function (nextProps) {
+        this.setState({
+            fwDialog: nextProps.fwDialog
+        });
+    },
     handleSearchButton: function() {
-        alert('䏦ふ韥 䛨じゅぐ㫣觊 盥ば䛧黨さ かも');
+        this.state.fwDialog.props.component = React.createElement(SearchForm, null)
+        this.state.fwDialog.openDialog();
     },
     handleMenuButton: function() {
-        alert(' り婧 かもまぽヂョ 尦す䣥ニュは 穞り婧 覧䋧');
+        var isShow = true;
+        if (this.state.showSubMenu) {
+            isShow = false;
+        }
+
+        this.setState({
+            showSubMenu: isShow
+        });
     },
     render: function() {
         return (
@@ -26585,7 +26645,8 @@ var Navigation = React.createClass({displayName: "Navigation",
                         React.createElement(FontIcon, {className: "icon-menu u-pull-right", onClick: this.handleMenuButton})
                     )
                 ), 
-                React.createElement("div", {className: "u-cf"})
+                React.createElement("div", {className: "u-cf"}), 
+                React.createElement(SubMenu, {candidates: candidates, show: this.state.showSubMenu})
             )
         );
     }
@@ -26593,7 +26654,7 @@ var Navigation = React.createClass({displayName: "Navigation",
 
 module.exports = Navigation;
 
-},{"./SubMenu":243,"material-ui":3,"react":236}],242:[function(require,module,exports){
+},{"./SearchForm":242,"./SubMenu":243,"material-ui":3,"react":236}],242:[function(require,module,exports){
 var React = require('react'),
     mui = require('material-ui'),
     DropDownMenu = mui.DropDownMenu,
@@ -26635,8 +26696,15 @@ var SearchForm = React.createClass({displayName: "SearchForm",
                     payload: '3',
                     text: 'React JS'
                 }
-            ]
+            ],
+            slideAbc: 50
         };
+    },
+    onSlideChange: function() {
+        var myValue = this.refs.abc.getValue();
+        this.setState({
+            slideAbc: Math.round(myValue * 100)
+        })
     },
     render: function() {
         return (
@@ -26738,9 +26806,9 @@ var SearchForm = React.createClass({displayName: "SearchForm",
                             React.createElement("div", null, 
                                 React.createElement("span", null, "Slide"), 
                                 React.createElement("div", {className: "row form-slider"}, 
-                                    React.createElement("div", {className: "four columns color-red"}, "獤䦪ち"), 
+                                    React.createElement("div", {className: "four columns color-red"}, "~", this.state.slideAbc), 
                                     React.createElement("div", {className: "eight columns"}, 
-                                        React.createElement(Slider, {defaultValue: .5})
+                                        React.createElement(Slider, {defaultValue: .5, ref: "abc", name: "abc", onChange: this.onSlideChange.bind()})
                                     )
                                 )
                             ), 
@@ -26813,6 +26881,10 @@ var React = require('react'),
 var SubMenu = React.createClass({displayName: "SubMenu",
     render: function() {
         var candidates = this.props.candidates || [];
+        var isShow = this.props.show || false;
+        var className = "four columns candidate-submenu ";
+        className += isShow ? "showSubMenu" : "hideSubMenu";
+
         var Candidate = candidates.map(function(data, idx) {
             var candidatePic = {
                 backgroundImage: 'url(./dist/imgs/profile/' + idx + '.jpg)'
@@ -26832,7 +26904,7 @@ var SubMenu = React.createClass({displayName: "SubMenu",
             )
         });
         return (
-            React.createElement("div", {className: "four columns candidate-submenu"}, 
+            React.createElement("div", {className: className}, 
                 React.createElement(Tabs, null, 
                     React.createElement(Tab, {label: "Tab 1"}, 
                         React.createElement("div", {className: "tab-template-container"}, 

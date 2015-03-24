@@ -6,6 +6,10 @@ var React = require('react'),
 var SubMenu = React.createClass({
     render: function() {
         var candidates = this.props.candidates || [];
+        var isShow = this.props.show || false;
+        var className = "four columns candidate-submenu ";
+        className += isShow ? "showSubMenu" : "hideSubMenu";
+
         var Candidate = candidates.map(function(data, idx) {
             var candidatePic = {
                 backgroundImage: 'url(./dist/imgs/profile/' + idx + '.jpg)'
@@ -25,7 +29,7 @@ var SubMenu = React.createClass({
             )
         });
         return (
-            <div className="four columns candidate-submenu">
+            <div className={className}>
                 <Tabs>
                     <Tab label="Tab 1">
                         <div className="tab-template-container">

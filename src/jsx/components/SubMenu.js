@@ -7,7 +7,7 @@ var SubMenu = React.createClass({
     render: function() {
         var candidates = this.props.candidates || [];
         var isShow = this.props.show || false;
-        var className = "four columns candidate-submenu ";
+        var className = "candidate-submenu ";
         className += isShow ? "showSubMenu" : "hideSubMenu";
 
         var Candidate = candidates.map(function(data, idx) {
@@ -34,11 +34,6 @@ var SubMenu = React.createClass({
                     <Tab label="Tab 1">
                         <div className="tab-template-container">
                             {Candidate}
-                        </div>
-                    </Tab>
-                    <Tab label="Tab 2">
-                        <div className="tab-template-container">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam voluptatum eaque, vero cupiditate vitae. Dolorem, molestias, eos? Laudantium, itaque, sit. Libero eum consectetur odio, iste saepe dicta sint aspernatur molestiae.
                         </div>
                     </Tab>
                 </Tabs>

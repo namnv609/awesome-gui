@@ -55,7 +55,23 @@ var CandidateCard = React.createClass({
     },
     onClickCandidateCard: function(idx) {
         var fwDialog = this.props.fwDialog;
-        fwDialog.props.component = <Candidate />;
+        var candidate = {
+            id: '1',
+            name: '階ゆ',
+            skills: {
+                labels: ["HTML", "JS", "jQuery", "Phalcon", "CSS", "ReactJS"],
+                datasets: [
+                    {
+                        fillColor : "rgba(255,0,0,0.2)",
+                        strokeColor : "#F00",
+                        pointColor : "#fff",
+                        pointStrokeColor : "#9DB86D",
+                        data: [31.3, 56.3, 76.8, 15.4, 45.4, 36.6]
+                    }
+                ]
+            }
+        };
+        fwDialog.props.component = <Candidate candidate={candidate} />;
         fwDialog.openDialog();
     },
     render: function() {

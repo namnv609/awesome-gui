@@ -47,68 +47,69 @@ div.section-title
             font:
                 weight: lighter
                 size: 1.6rem
-    .candidate-submenu
-        border: 1px solid $indigo-50
-        +box-shadow($indigo-50 3px 3px 3px)
-        padding: 5px
-        z-index: 10
-        background: $grey-50
-        position: absolute
-        right: -100%
-        min-height: 100%
-        max-height: 100%
-        overflow: auto
-        .mui-
-            &tab-item-container
-                background: #FFF
-                height: 2.4rem
-                .mui-tab-item
-                    line-height: 2.4rem
-                    color: $grey-900
-                    width: 50% !important
-                    border-bottom: 1px solid $red-100
-            &tab-template
-                padding: 1rem 0 0
-            &ink-bar
-                background: $red-500
-                width: 10.4rem
-                width: 50%
-                &:not(.mui-tab-item:first-child)
-                    left: 50% !important
-                    height: 4px
-        .candidate-card
-            margin: 1rem 0
-            .picture
-                width: 6rem
-                height: 6rem
-                background:
-                    size: 100%
-                    position: center
-                    repeat: no-repeat
-                +border-radius(50%)
-                margin: 0 auto
-            p
-                text-overflow: ellipsis
-                white-space: nowrap
-                overflow: hidden
-                margin: 0
-                padding: 0
-                &.name
-                    font-weight: bold
-                &.academic
-                    color: $red-500
-                &.tags
-                    color: $grey-500
-                    font-size: 1rem
-            .score-bubble
-                float: left
-                padding: 0 3px
-                background: $red-500
-                color: $grey-50
-                +border-radius(4px)
-                font:
-                    weight: bold
-                    size: 1.2rem
+.candidate-submenu
+    border: 1px solid $indigo-50
+    +box-shadow($indigo-50 3px 3px 3px)
+    padding: 5px
+    z-index: 10
+    background: $grey-50
+    position: absolute
+    min-height: 100%
+    max-height: 100%
+    overflow: auto
+    width: 25.6rem
+    right: 0
+    .mui-
+        &tab-item-container
+            background: #FFF
+            height: 2.4rem
+            .mui-tab-item
+                line-height: 2.4rem
+                color: $grey-900
+                // width: 50% !important
+                border-bottom: 1px solid $red-100
+        &tab-template
+            padding: 1rem 0 0
+        &ink-bar
+            background: $red-500
+            width: 10.4rem
+            width: 100%
+            &:not(.mui-tab-item:first-child)
+                // left: 50% !important
+                height: 4px
+    .candidate-card
+        margin: 1rem 0
+        .picture
+            width: 6rem
+            height: 6rem
+            background:
+                size: 100%
+                position: center
+                repeat: no-repeat
+            +border-radius(50%)
+            margin: 0 auto
+        p
+            text-overflow: ellipsis
+            white-space: nowrap
+            overflow: hidden
+            margin: 0
+            padding: 0
+            &.name
+                font-weight: bold
+            &.academic
+                color: $red-500
+            &.tags
+                color: $grey-500
+                font-size: 1rem
+        .score-bubble
+            float: left
+            padding: 0 3px
+            background: $red-500
+            color: $grey-50
+            +border-radius(4px)
+            font:
+                weight: bold
+                size: 1.2rem
 
 
 #candidate-list,
@@ -119,7 +120,8 @@ div.section-title
         +box-shadow(none !important)
     .candidate-card
         border: 1px solid $indigo-50
-        +box-shadow($indigo-50 3px 3px 3px)
+        // +box-shadow($indigo-50 0 3px 3px)
+        width: 25.6rem
         cursor: pointer
         padding: 1rem 0
         position: relative
@@ -207,6 +209,7 @@ div.section-title
             &score
                 background: url(../imgs/badge.png) no-repeat top left
                 padding: 1.4rem 0 2.2rem 0
+                font-size: 1.6rem
             &bookmark-star
                 background: url(../imgs/bookmarked.png) no-repeat top left
                 top: 7.6rem
@@ -239,10 +242,17 @@ div.section-title
 #full-width-dialog
     position: fixed
     background: $grey-50
-    top: 12.4rem
+    top: 0
+    right: 0
+    bottom: 0
+    left: 0
+    width: 96rem
+    margin: auto
     z-index: 10000
     padding: 0
     visibility: hidden
+    border: 1px solid $grey-200
+    +box-shadow($indigo-50 3px 3px 3px)
     .dialog-title
         background: $red-600
         font-size: 1.6rem
@@ -255,6 +265,9 @@ div.section-title
             cursor: pointer
     .dialog-content
         padding: 1rem
+        position: relative
+        height: 96%
+        overflow: auto
 
         .in-dialog
             margin-top: 0
@@ -360,8 +373,10 @@ div.section-title
     +transition(.5s)
     right: 0% !important
 .hideSubMenu
-    +transition(.5s)
-    right: -100%
+    +transition(opacity 1s ease-out)
+    +opacity(0)
+    // right: -256px
+    // display: none
 
 +keyframes(fadeInDown)
     0%

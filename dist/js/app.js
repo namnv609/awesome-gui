@@ -26217,12 +26217,12 @@ var React = require('react'),
     mui = require('material-ui');
 
 var SkillsChart = React.createClass({displayName: "SkillsChart",
-    componentWillReceiveProps: function (nextProps) {
+    componentDidMount: function () {
         var canvas = document.getElementById('skillsCanvas').getContext('2d');
         Chart.defaults.global.showTooltips = false;
         Chart.defaults.global.responsive = false;
 
-        new Chart(canvas).Radar(nextProps.skills);
+        new Chart(canvas).Radar(this.props.skills);
     },
     render: function() {
         return (
@@ -26238,24 +26238,11 @@ var Candidate = React.createClass({displayName: "Candidate",
         };
     },
     componentDidMount: function () {
-        this.setState({
-            skills: {
-                labels: ["HTML", "JS", "jQuery", "Phalcon", "CSS", "ReactJS"],
-                datasets: [
-                    {
-                        fillColor : "rgba(255,0,0,0.2)",
-                        strokeColor : "#F00",
-                        pointColor : "#fff",
-                        pointStrokeColor : "#9DB86D",
-                        data: [31.3, 25.3, 76.8, 15.4, 45.4, 36.6]
-                    }
-                ]
-            }
-        });
     },
     render: function() {
-        var candidateImage = {
-            backgroundImage: 'url(./dist/imgs/profile/0.jpg)'
+        var candidate = this.props.candidate || {};
+            candidateImage = {
+            backgroundImage: 'url(./dist/imgs/profile/'+ candidate.id +'.jpg)'
         };
 
         return (
@@ -26268,18 +26255,18 @@ var Candidate = React.createClass({displayName: "Candidate",
                             React.createElement("div", {className: "candidate-bookmark-star high-top"}, "24")
                         ), 
                         React.createElement("div", {className: "candidate-name in-dialog"}, 
-                            "階ゆ"
+                            candidate.name
                         ), 
                         React.createElement("div", {className: "candidate-general"}, 
                             React.createElement("p", {className: "male"}, 
-                                "000001 / Male / 23yr"
+                                "00000", candidate.id, " / Male / 23yr"
                             ), 
                             React.createElement("p", {className: "university"}, 
                                 "Tokyo"
                             )
                         ), 
                         React.createElement("div", {className: "candidate-skills-chart"}, 
-                            React.createElement(SkillsChart, {skills: this.state.skills})
+                            React.createElement(SkillsChart, {skills: candidate.skills})
                         )
                     )
                 ), 
@@ -26427,7 +26414,23 @@ var CandidateCard = React.createClass({displayName: "CandidateCard",
     },
     onClickCandidateCard: function(idx) {
         var fwDialog = this.props.fwDialog;
-        fwDialog.props.component = React.createElement(Candidate, null);
+        var candidate = {
+            id: '1',
+            name: '階ゆ',
+            skills: {
+                labels: ["HTML", "JS", "jQuery", "Phalcon", "CSS", "ReactJS"],
+                datasets: [
+                    {
+                        fillColor : "rgba(255,0,0,0.2)",
+                        strokeColor : "#F00",
+                        pointColor : "#fff",
+                        pointStrokeColor : "#9DB86D",
+                        data: [31.3, 56.3, 76.8, 15.4, 45.4, 36.6]
+                    }
+                ]
+            }
+        };
+        fwDialog.props.component = React.createElement(Candidate, {candidate: candidate});
         fwDialog.openDialog();
     },
     render: function() {
@@ -26520,11 +26523,13 @@ var FWDialog = React.createClass({displayName: "FWDialog",
         };
     },
     openDialog: function() {
+        document.body.style.overflow = "hidden";
         this.setState({
             show: true
         });
     },
     closeDialog: function() {
+        document.body.style.overflow = "auto";
         this.setState({
             show: false
         });
@@ -26882,7 +26887,7 @@ var SubMenu = React.createClass({displayName: "SubMenu",
     render: function() {
         var candidates = this.props.candidates || [];
         var isShow = this.props.show || false;
-        var className = "four columns candidate-submenu ";
+        var className = "candidate-submenu ";
         className += isShow ? "showSubMenu" : "hideSubMenu";
 
         var Candidate = candidates.map(function(data, idx) {
@@ -26909,11 +26914,6 @@ var SubMenu = React.createClass({displayName: "SubMenu",
                     React.createElement(Tab, {label: "Tab 1"}, 
                         React.createElement("div", {className: "tab-template-container"}, 
                             Candidate
-                        )
-                    ), 
-                    React.createElement(Tab, {label: "Tab 2"}, 
-                        React.createElement("div", {className: "tab-template-container"}, 
-                            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam voluptatum eaque, vero cupiditate vitae. Dolorem, molestias, eos? Laudantium, itaque, sit. Libero eum consectetur odio, iste saepe dicta sint aspernatur molestiae."
                         )
                     )
                 )

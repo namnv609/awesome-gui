@@ -2,12 +2,12 @@ var React = require('react'),
     mui = require('material-ui');
 
 var SkillsChart = React.createClass({
-    componentWillReceiveProps: function (nextProps) {
+    componentDidMount: function () {
         var canvas = document.getElementById('skillsCanvas').getContext('2d');
         Chart.defaults.global.showTooltips = false;
         Chart.defaults.global.responsive = false;
 
-        new Chart(canvas).Radar(nextProps.skills);
+        new Chart(canvas).Radar(this.props.skills);
     },
     render: function() {
         return (
@@ -23,24 +23,11 @@ var Candidate = React.createClass({
         };
     },
     componentDidMount: function () {
-        this.setState({
-            skills: {
-                labels: ["HTML", "JS", "jQuery", "Phalcon", "CSS", "ReactJS"],
-                datasets: [
-                    {
-                        fillColor : "rgba(255,0,0,0.2)",
-                        strokeColor : "#F00",
-                        pointColor : "#fff",
-                        pointStrokeColor : "#9DB86D",
-                        data: [31.3, 25.3, 76.8, 15.4, 45.4, 36.6]
-                    }
-                ]
-            }
-        });
     },
     render: function() {
-        var candidateImage = {
-            backgroundImage: 'url(./dist/imgs/profile/0.jpg)'
+        var candidate = this.props.candidate || {};
+            candidateImage = {
+            backgroundImage: 'url(./dist/imgs/profile/'+ candidate.id +'.jpg)'
         };
 
         return (
@@ -53,18 +40,18 @@ var Candidate = React.createClass({
                             <div className="candidate-bookmark-star high-top">24</div>
                         </div>
                         <div className="candidate-name in-dialog">
-                            階ゆ
+                            {candidate.name}
                         </div>
                         <div className="candidate-general">
                             <p className="male">
-                                000001 / Male / 23yr
+                                00000{candidate.id} / Male / 23yr
                             </p>
                             <p className="university">
                                 Tokyo
                             </p>
                         </div>
                         <div className="candidate-skills-chart">
-                            <SkillsChart skills={this.state.skills} />
+                            <SkillsChart skills={candidate.skills} />
                         </div>
                     </div>
                 </div>

@@ -11,11 +11,13 @@ var FWDialog = React.createClass({
         };
     },
     openDialog: function() {
+        document.body.style.overflow = "hidden";
         this.setState({
             show: true
         });
     },
     closeDialog: function() {
+        document.body.style.overflow = "auto";
         this.setState({
             show: false
         });

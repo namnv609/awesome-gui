@@ -26,12 +26,16 @@ var Navigation = React.createClass({
     getInitialState: function () {
         return {
             fwDialog: {},
-            showSubMenu: false
+            showSubMenu: false,
+            totalCandidate: 0
         };
     },
     componentWillReceiveProps: function (nextProps) {
+        var totalCandidate = nextProps.total || 0;
+
         this.setState({
-            fwDialog: nextProps.fwDialog
+            fwDialog: nextProps.fwDialog,
+            totalCandidate: totalCandidate
         });
     },
     handleSearchButton: function() {
@@ -55,10 +59,10 @@ var Navigation = React.createClass({
                     <ToolbarGroup className="eight columns">
                         <div className="search u-pull-left">
                             <FontIcon className="icon-search" onClick={this.handleSearchButton} />
-                            <span className="result-number">4</span>文
+                            <span className="result-number">{this.state.totalCandidate}</span>文
                         </div>
                         <div className="sort-order u-pull-right">
-                            䏦ふ: 韥 䛨じ
+                            並び順：新着順
                         </div>
                     </ToolbarGroup>
                     <ToolbarGroup className="four columns">

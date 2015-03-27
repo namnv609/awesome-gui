@@ -7,6 +7,24 @@ var React = require('react'),
     Checkbox = mui.Checkbox,
     TextField = mui.TextField;
 
+var SlideBar = React.createClass({
+    changeSlide: function() {
+        this.props.onSlide(this.props.target);
+    },
+    render: function() {
+        return (
+            <div>
+                <div onClick={this.changeSlide}>
+                dddddd
+                </div>
+                <div>
+                    {this.props.toggle ? "true" : "false"}
+                </div>
+            </div>
+        )
+    }
+});
+
 
 
 var SearchForm = React.createClass({
@@ -71,25 +89,32 @@ var SearchForm = React.createClass({
                 }
             ],
             candidateAge: candidateAge,
-            sliderRefs: {
-                it_subject: 50,
-                logical: 50,
-                japanese: 50,
-                english: 50,
-                result_of_interview: 50,
-                work_experience: 50,
-                score: 500
+            slideAbc: 50,
+            slidebars: {
+                english: true,
+                japanese: true
             }
         };
     },
-    onSlideChange: function(ref, _this, value) {
-        var cloneState = this.state;
-        cloneState.sliderRefs[ref] = Math.round(value * 100);
-        this.setState(cloneState);
+    onSlide: function(target) {        
+        var clone_state = this.state;
+        clone_state.slidebars[target] = !clone_state.slidebars[target];
+        this.setState(clone_state);
+    },
+    onSlideChange: function(e, v) {
+        // console.log(this);
+        // var myValue = this.refs.it_subject.getValue();
+        // this.setState({
+        //     slideAbc: Math.round(myValue * 100)
+        // })
+        // console.log(v);
+        console.log(e);
     },
     render: function() {
         return (
             <div className="dialog-content row">
+                <SlideBar onSlide={this.onSlide} toggle={this.state.slidebars.japanese} target="japanese" />
+                <SlideBar onSlide={this.onSlide} toggle={this.state.slidebars.english} target="english" />
                 <div className="columns six">
                     <div className="section-title">
                         基本条件
@@ -125,9 +150,9 @@ var SearchForm = React.createClass({
                             <div>
                                 <span className="color-red">スコア</span>
                                 <div className="row form-slider">
-                                    <div className="four columns">{this.state.sliderRefs.score}~</div>
+                                    <div className="four columns">500~</div>
                                     <div className="eight columns">
-                                        <Slider defaultValue={5} ref="score" max="10" onChange={this.onSlideChange.bind(this, 'score')} />
+                                        <Slider defaultValue={5} ref="score" min="0" max="10" />
                                     </div>
                                 </div>
                             </div>
@@ -170,54 +195,54 @@ var SearchForm = React.createClass({
                             <div>
                                 <span>日本語</span>
                                 <div className="row form-slider">
-                                    <div className="four columns color-red">{this.state.sliderRefs.japanese}以上</div>
+                                    <div className="four columns color-red">以上</div>
                                     <div className="eight columns">
-                                        <Slider defaultValue={.5} ref="japanese" onChange={this.onSlideChange.bind(this, 'japanese')} />
+                                        <Slider defaultValue={.5} ref="japanese" />
                                     </div>
                                 </div>
                             </div>
                             <div>
                                 <span>英語</span>
                                 <div className="row form-slider">
-                                    <div className="four columns color-red">{this.state.sliderRefs.english}以上</div>
+                                    <div className="four columns color-red">以上</div>
                                     <div className="eight columns">
-                                        <Slider defaultValue={.5} ref="english" onChange={this.onSlideChange.bind(this, 'english')} />
+                                        <Slider defaultValue={.5} ref="english" />
                                     </div>
                                 </div>
                             </div>
                             <div>
                                 <span>IT科目</span>
                                 <div className="row form-slider">
-                                    <div className="four columns color-red">{this.state.sliderRefs.it_subject}以上</div>
+                                    <div className="four columns color-red">{this.state.slideAbc}以上</div>
                                     <div className="eight columns">
-                                        <Slider defaultValue={.5} ref="it_subject" onChange={this.onSlideChange.bind(this, 'it_subject')} />
+                                        <Slider defaultValue={.5} ref="it_subject" name="slideAbc" onChange={this.onSlideChange} />
                                     </div>
                                 </div>
                             </div>
                             <div>
                                 <span>論理</span>
                                 <div className="row form-slider">
-                                    <div className="four columns color-red">{this.state.sliderRefs.logical}以上</div>
+                                    <div className="four columns color-red">以上</div>
                                     <div className="eight columns">
-                                        <Slider defaultValue={.5} ref="logical" onChange={this.onSlideChange.bind(this, 'logical')} />
+                                        <Slider defaultValue={.5} ref="logical" />
                                     </div>
                                 </div>
                             </div>
                             <div>
                                 <span>面談評価</span>
                                 <div className="row form-slider">
-                                    <div className="four columns color-red">{this.state.sliderRefs.result_of_interview}以上</div>
+                                    <div className="four columns color-red">以上</div>
                                     <div className="eight columns">
-                                        <Slider defaultValue={.5} ref="result_of_interview" onChange={this.onSlideChange.bind(this, 'result_of_interview')} />
+                                        <Slider defaultValue={.5} ref="result_of_interview" />
                                     </div>
                                 </div>
                             </div>
                             <div>
                                 <span>職業経験</span>
                                 <div className="row form-slider">
-                                    <div className="four columns color-red">{this.state.sliderRefs.work_experience}以上</div>
+                                    <div className="four columns color-red">以上</div>
                                     <div className="eight columns">
-                                        <Slider defaultValue={.5} ref="work_experience" onChange={this.onSlideChange.bind(this, 'work_experience')} />
+                                        <Slider defaultValue={.5} ref="work_experience" />
                                     </div>
                                 </div>
                             </div>

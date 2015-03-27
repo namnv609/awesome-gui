@@ -105,6 +105,9 @@ div.section-title {
       font-weight: bold;
       font-size: 1.2rem; }
 
+#candidate-list {
+  position: relative; }
+
 #candidate-list,
 #full-width-dialog {
   padding: 2rem 1rem; }
@@ -120,7 +123,7 @@ div.section-title {
     width: 25.6rem;
     cursor: pointer;
     padding: 1rem 0;
-    position: relative; }
+    position: absolute; }
     #candidate-list .candidate-card .candidate-picture,
     #full-width-dialog .candidate-card .candidate-picture {
       background-repeat: no-repeat;
@@ -280,11 +283,14 @@ div.section-title {
     #full-width-dialog .dialog-title > span {
       line-height: 2.2rem;
       cursor: pointer; }
+  #full-width-dialog .candidate-card {
+    position: static; }
   #full-width-dialog .dialog-content {
     padding: 1rem;
     position: relative;
     height: 96%;
-    overflow: auto; }
+    overflow: auto;
+    overflow-x: hidden; }
     #full-width-dialog .dialog-content .in-dialog {
       margin-top: 0;
       border-bottom: 0; }
@@ -340,6 +346,9 @@ div.section-title {
         #full-width-dialog .dialog-content .candidate-addition-info .source-uploaded a, #full-width-dialog .dialog-content .form-search .source-uploaded a {
           color: #f44336;
           margin: 0 0.5rem; }
+    #full-width-dialog .dialog-content .form-search .half {
+      max-width: 24% !important;
+      width: 24% !important; }
     #full-width-dialog .dialog-content .form-search .form-dropdown {
       height: 2.6rem;
       max-width: 60%; }
@@ -385,18 +394,19 @@ div.section-title {
       color: #212121; }
 
 .fadeInDown {
-  -moz-animation: fadeInDown 1s ease 0s both;
-  -webkit-animation: fadeInDown 1s ease 0s both;
-  animation: fadeInDown 1s ease 0s both;
+  -moz-animation: fadeInDown 1s ease 0s forwards;
+  -webkit-animation: fadeInDown 1s ease 0s forwards;
+  animation: fadeInDown 1s ease 0s forwards;
   visibility: visible !important; }
 
 .fadeOutUp {
-  -moz-animation: fadeOutUp 1s ease 0s both;
-  -webkit-animation: fadeOutUp 1s ease 0s both;
-  animation: fadeOutUp 1s ease 0s both;
-  visibility: visible !important; }
+  -moz-animation: fadeOutUp 1s ease 0s forwards;
+  -webkit-animation: fadeOutUp 1s ease 0s forwards;
+  animation: fadeOutUp 1s ease 0s forwards;
+  visibility: hidden !important; }
 
 .showSubMenu {
+  visibility: visible !important;
   -moz-transition: 0.5s;
   -o-transition: 0.5s;
   -webkit-transition: 0.5s;
@@ -450,7 +460,8 @@ div.section-title {
   100% {
     opacity: 0;
     -moz-transform: translateY(-2rem);
-    transform: translateY(-2rem); } }
+    transform: translateY(-2rem);
+    visibility: hidden; } }
 @-webkit-keyframes fadeOutUp {
   0% {
     opacity: 1;
@@ -459,7 +470,8 @@ div.section-title {
   100% {
     opacity: 0;
     -webkit-transform: translateY(-2rem);
-    transform: translateY(-2rem); } }
+    transform: translateY(-2rem);
+    visibility: hidden; } }
 @keyframes fadeOutUp {
   0% {
     opacity: 1;
@@ -472,4 +484,5 @@ div.section-title {
     -moz-transform: translateY(-2rem);
     -ms-transform: translateY(-2rem);
     -webkit-transform: translateY(-2rem);
-    transform: translateY(-2rem); } }
+    transform: translateY(-2rem);
+    visibility: hidden; } }

@@ -26232,6 +26232,55 @@ var SkillsChart = React.createClass({displayName: "SkillsChart",
 });
 
 var Candidate = React.createClass({displayName: "Candidate",
+    skillsExtractor: function(skills, isChart) {
+        var _isChart = (typeof isChart === "undefined" ? true : false);
+        var skillData = null;
+
+        if (_isChart === true) {
+            var skillName = ["面談評価", "論理", "IT科目", "職業経験", "日本語", "英語"];
+
+            var skillScore = {"result": 0, "logic": 0, "subject": 0, "work_exp": 0, "japanese": 0, "english": 0};
+            var skillAlias = {157: "result", 154: "logic", 155: "subject", 156: "work_exp", 127: "japanese", 153: "english"};
+            var score = [];
+
+            skills.forEach(function(skill, idx) {
+                if (skillAlias[skill.m_skill_id]) {
+                    skillScore[skillAlias[skill.m_skill_id]] = skill.score;
+                }
+            });
+            
+            for (var key in skillScore) {
+                score.push(skillScore[key]);
+            }
+
+            skillData = {
+                labels: skillName,
+                datasets: [
+                    {
+                        fillColor : "rgba(255,0,0,0.2)",
+                        strokeColor : "#F00",
+                        pointColor : "#fff",
+                        pointStrokeColor : "#9DB86D",
+                        data: score
+                    }
+                ]
+            };
+        } else {
+            var skillCate = {"Programming Language": [], "Frameworks": [], "OS": [], "Languages": [], "Other (IT)": [], "Basic": []};
+            var skillCateName = {1: "Programming Language", 2: "Frameworks", 3: "OS", 4: "Languages", 5: "Other (IT)", 6: "Basic"};
+
+            skills.forEach(function(skill, idx) {
+                skillCate[skillCateName[skill.m_skill_category_id]].push({
+                    'name': skill.m_skill_name,
+                    'exp': skill.experience
+                });
+            });
+
+            skillData = skillCate;
+        }
+
+        return skillData;
+    },
     getInitialState: function () {
         return {
             skills: []  
@@ -26240,92 +26289,81 @@ var Candidate = React.createClass({displayName: "Candidate",
     componentDidMount: function () {
     },
     render: function() {
-        var candidate = this.props.candidate || {};
+        var candidate = this.props.candidate || {},
+            candidateData = candidate.candidate || {},
             candidateImage = {
-            backgroundImage: 'url(./dist/imgs/profile/'+ candidate.id +'.jpg)'
-        };
+                backgroundImage: 'url(./dist/imgs/profile/'+ candidateData.id +'.jpg)'
+            },
+            skillCategories = this.skillsExtractor(candidate.skills, false);
 
+        var programmingLangSkills = skillCategories["Programming Language"].map(function(skill, idx) {
+            return (
+                React.createElement("p", null, 
+                    React.createElement("span", null, skill.name), 
+                    React.createElement("span", null, skill.exp)
+                )
+            );
+        });
+        var frameworkSkills = skillCategories["Frameworks"].map(function(skill, idx) {
+            return (
+                React.createElement("p", null, skill.name)
+            )
+        });
+        var osSkills = skillCategories["OS"].map(function(skill, idx) {
+            return (
+                React.createElement("p", null, skill.name)
+            )
+        })
         return (
             React.createElement("div", {className: "dialog-content row"}, 
                 React.createElement("div", {className: "columns four"}, 
                     React.createElement("div", {className: "candidate-card no-border"}, 
                         React.createElement("div", {className: "candidate-picture", style: candidateImage}, 
-                            React.createElement("div", {className: "candidate-score"}, "705"), 
+                            React.createElement("div", {className: "candidate-score"}, candidateData.total_score), 
                             React.createElement("div", {className: "u-cf"}), 
-                            React.createElement("div", {className: "candidate-bookmark-star high-top"}, "24")
+                            React.createElement("div", {className: "candidate-bookmark-star high-top"}, candidateData.total_bookmark)
                         ), 
                         React.createElement("div", {className: "candidate-name in-dialog"}, 
-                            candidate.name
+                            candidateData.name_kana
                         ), 
                         React.createElement("div", {className: "candidate-general"}, 
-                            React.createElement("p", {className: "male"}, 
-                                "00000", candidate.id, " / Male / 23yr"
+                            React.createElement("p", {className: candidate.gender[candidateData.gender]['class']}, 
+                                "00000", candidateData.id, " / ", candidate.gender[candidateData.gender]['text'], " / 23yr"
                             ), 
                             React.createElement("p", {className: "university"}, 
-                                "Tokyo"
+                                candidateData.m_highschool_name
                             )
                         ), 
                         React.createElement("div", {className: "candidate-skills-chart"}, 
-                            React.createElement(SkillsChart, {skills: candidate.skills})
+                            React.createElement(SkillsChart, {skills: this.skillsExtractor(candidate.skills)})
                         )
                     )
                 ), 
                 React.createElement("div", {className: "columns four"}, 
                     React.createElement("div", {className: "section-title"}, 
-                        "韥 䛨じ" 
+                        "タグ"
                     ), 
                     React.createElement("div", {className: "candidate-addition-info"}, 
                         "PHP, CSS, JavaScript"
                     ), 
                     React.createElement("div", {className: "section-title"}, 
-                        "IT - 大ぴちゅ窣栧"
+                        "ITスキル・経験"
                     ), 
                     React.createElement("div", {className: "candidate-addition-info"}, 
-                        React.createElement("p", {className: "sub-section-title"}, "Language"), 
+                        React.createElement("p", {className: "sub-section-title"}, "言語"), 
                         React.createElement("div", {className: "programing-languages border-top"}, 
-                            React.createElement("p", null, 
-                                React.createElement("span", null, "Java"), 
-                                React.createElement("span", null, "3yr")
-                            ), 
-                            React.createElement("p", null, 
-                                React.createElement("span", null, "JS"), 
-                                React.createElement("span", null, "3yr")
-                            ), 
-                            React.createElement("p", null, 
-                                React.createElement("span", null, "CJS"), 
-                                React.createElement("span", null, "3yr")
-                            ), 
-                            React.createElement("p", null, 
-                                React.createElement("span", null, "HTML "), 
-                                React.createElement("span", null, "3yr")
-                            )
+                            programmingLangSkills
                         ), 
-                        React.createElement("p", {className: "sub-section-title"}, "Framework"), 
+                        React.createElement("p", {className: "sub-section-title"}, "フレームワーク"), 
                         React.createElement("div", {className: "programing-languages border-top"}, 
-                            React.createElement("p", null, 
-                                "CakePHP"
-                            ), 
-                            React.createElement("p", null, 
-                                "Kohana II"
-                            ), 
-                            React.createElement("p", null, 
-                                "CodeIgniter"
-                            ), 
-                            React.createElement("p", null, 
-                                "ASP.NET MVC 4" 
-                            )
+                            frameworkSkills
                         ), 
                         React.createElement("p", {className: "sub-section-title"}, "OS"), 
                         React.createElement("div", {className: "programing-languages border-top"}, 
-                            React.createElement("p", null, 
-                                "Ubuntuu"
-                            ), 
-                            React.createElement("p", null, 
-                                "Windows Server"
-                            )
+                            osSkills
                         )
                     ), 
-                    React.createElement("div", {className: "section-title"}, "File upload"), 
+                    React.createElement("div", {className: "section-title"}, "資格、受賞歴、コンテスト参加歴"), 
                     React.createElement("div", {className: "candidate-addition-info"}, 
                         React.createElement("div", {className: "source-uploaded"}, 
                             React.createElement("p", null, 
@@ -26340,7 +26378,7 @@ var Candidate = React.createClass({displayName: "Candidate",
                     )
                 ), 
                 React.createElement("div", {className: "columns four"}, 
-                    React.createElement("div", {className: "section-title"}, "Interview"), 
+                    React.createElement("div", {className: "section-title"}, "インタビュー"), 
                     React.createElement("div", {className: "candidate-addition-info"}), 
                     "Lorem ipsum dolor sit amet, consectetur adipisicing elit.", React.createElement("br", null), 
                     "Accusantium, ipsa et aut, atque vel voluptates possimus velit nulla aliquam officia reprehenderit voluptatum a amet quas, commodi!", React.createElement("br", null), 
@@ -26360,8 +26398,17 @@ module.exports = Candidate;
 var React = require('react'),
     mui = require('material-ui'),
     FontIcon = mui.FontIcon,
-    Candidate = require('./Candidate');
-
+    Candidate = require('./Candidate'),
+    candidateGender = {
+        0: {
+            text: '男性',
+            class: 'male'
+        },
+        1: {
+            text: '女性',
+            class: 'female'
+        }
+    };
 var CandidateList = React.createClass({displayName: "CandidateList",
     getInitialState: function () {
         return {
@@ -26381,100 +26428,119 @@ var CandidateList = React.createClass({displayName: "CandidateList",
 });
 
 var CandidateCard = React.createClass({displayName: "CandidateCard",
+    ageCalculation: function(birthday) {
+        var dateTime = birthday.split(/\s/);
+        birthday = Date.parse(dateTime[0]);
+        var ageDiffMs = Date.now() - birthday;
+        var ageDate = new Date(ageDiffMs);
+
+        return Math.abs(ageDate.getUTCFullYear() - 1970);
+    },
     getInitialState: function() {
         return {
-            sampleData: []
+            candidates: []
         }
     },
+    skillsExtractor: function(skills) {
+        var skillCate = {"result": [], "logic": [], "subject": [], "work_exp": [], "japanese": [], "english": []};
+        var skillAlias = {157: "result", 154: "logic", 155: "subject", 156: "work_exp", 127: "japanese", 153: "english"};
+        var skillCateName = {157: "面談評価", 154: "論理", 155: "IT科目", 156: "職業経験", 127: "日本語", 153: "英語"};
+
+        skills.forEach(function(skill, idx) {
+            if (skillAlias[skill.m_skill_id]) {
+                skillCate[skillAlias[skill.m_skill_id]].push({
+                    text: skillCateName[skill.m_skill_id],
+                    score: skill.score
+                });
+            }
+        });
+
+        return skillCate;
+    },
     componentDidMount: function () {
-        this.setState({
-            sampleData: [
-                {
-                    name: 'Amumu',
-                    info: '階ゆ 䋤ばた 楺秞こめ䦦 壃壎礯䩵る',
-                    gender: 'male'
-                },
-                {
-                    name: 'Leblanc',
-                    info: '樦楦 つ囤にゅ韦マ みょ姚勣難ド',
-                    gender: 'female'
-                },
-                {
-                    name: 'Lee Sin',
-                    info: '階ゆ 䋤ばた 楺秞こめ䦦 壃壎礯䩵る',
-                    gender: 'male'
-                },
-                {
-                    name: 'Happy Feet',
-                    info: '樦楦 つ囤にゅ韦マ みょ姚勣難ド',
-                    gender: 'female'
-                }
-            ]
+        $.ajax({
+            type: 'POST',
+            url: 'api/candidates.php?action=search',
+            dataType: 'json',
+            success: function(response) {
+                this.setState({
+                    candidates: response.candidates
+                });
+                $(".candidate-list").shapeshift({
+                    enableDrag: false
+                });
+            }.bind(this),
+            error: function(xmlHTTPReq, ajaxOptions, error) {
+                console.log(error);
+            }.bind(this)
         });
     },
     onClickCandidateCard: function(idx) {
         var fwDialog = this.props.fwDialog;
-        var candidate = {
-            id: '1',
-            name: '階ゆ',
-            skills: {
-                labels: ["HTML", "JS", "jQuery", "Phalcon", "CSS", "ReactJS"],
-                datasets: [
-                    {
-                        fillColor : "rgba(255,0,0,0.2)",
-                        strokeColor : "#F00",
-                        pointColor : "#fff",
-                        pointStrokeColor : "#9DB86D",
-                        data: [31.3, 56.3, 76.8, 15.4, 45.4, 36.6]
-                    }
-                ]
+        $.ajax({
+            type: 'POST',
+            url: 'api/candidates.php?action=detail',
+            dataType: 'json',
+            data: {
+                id: idx
+            },
+            success: function(response) {
+                response['gender'] = candidateGender;
+                fwDialog.props.component = React.createElement(Candidate, {candidate: response});
+                fwDialog.props.title = response.candidate.name_kana;
+                fwDialog.openDialog();
+            }.bind(this),
+            error: function(xhr, ao, error) {
+                console.log(error);
             }
-        };
-        fwDialog.props.component = React.createElement(Candidate, {candidate: candidate});
-        fwDialog.openDialog();
+        });
     },
     render: function() {
-        var CandidateNode = this.state.sampleData.map(function(data, idx) {
+        var CandidateNode = this.state.candidates.map(function(data, idx) {
+            var skills = this.skillsExtractor(data.skills);
+            data = data.candidate;
             var inlineStyle = {
-                backgroundImage: 'url(./dist/imgs/profile/' + idx + '.jpg)'
+                backgroundImage: 'url(./dist/imgs/profile/' + data.id + '.jpg)'
             };
+            var registered = data.created_at.split(/\-|\s/);
+
             return (
-                React.createElement("div", {className: "candidate-card three columns", onClick: this.onClickCandidateCard.bind(this, idx)}, 
+                React.createElement("div", {className: "candidate-card", onClick: this.onClickCandidateCard.bind(this, idx), skills: skills}, 
                     React.createElement("div", {className: "candidate-picture", style: inlineStyle}, 
                         React.createElement("div", {className: "candidate-bookmark-icon u-pull-right"}, 
                             React.createElement(FontIcon, {className: "icon-star-full"})
                         ), 
-                        React.createElement("div", {className: "candidate-score"}, "32"), 
+                        React.createElement("div", {className: "candidate-score"}, data.total_score), 
                         React.createElement("div", {className: "u-cf"}), 
-                        React.createElement("div", {className: "candidate-bookmark-star"}, "24")
+                        React.createElement("div", {className: "candidate-bookmark-star"}, data.total_bookmark)
                     ), 
                     React.createElement("div", {className: "candidate-name"}, 
-                         data.name
+                         data.name_kana
                     ), 
                     React.createElement("div", {className: "candidate-general"}, 
-                        React.createElement("p", {className:  data.gender}, 
-                            "00000", idx, " / Male / 23yr"
+                        React.createElement("p", {className:  candidateGender[data.gender]['class'] }, 
+                            "00000", data.id, " / ", candidateGender[data.gender]['text'], " / ", this.ageCalculation(data.birthday), "歳"
                         ), 
                         React.createElement("p", {className: "university"}, 
-                            "Tokyo"
+                            data.m_highschool_name
                         )
                     ), 
                     React.createElement("div", {className: "candidate-skills"}, 
                         React.createElement("p", null, 
-                            React.createElement("span", null, "階ゆ"), 
-                            React.createElement("span", null, "58.0")
+                            React.createElement("span", null, "英語"), 
+                            React.createElement("span", null, skills.english[0].score || 0)
                         ), 
                         React.createElement("p", null, 
-                            React.createElement("span", null, "階ゆ"), 
-                            React.createElement("span", null, "58.0")
+                            React.createElement("span", null, "日本語"), 
+                            React.createElement("span", null, skills.japanese[0].score || 0)
                         ), 
                         React.createElement("p", null, 
-                            React.createElement("span", null, "階ゆ"), 
-                            React.createElement("span", null, "58.0")
+                            React.createElement("span", null, "論理"), 
+                            React.createElement("span", null, skills.logic[0].score || 0)
                         ), 
                         React.createElement("p", null, 
-                            React.createElement("span", null, "階ゆ"), 
-                            React.createElement("span", null, "58.0")
+                            React.createElement("span", null, "IT科目"), 
+                            React.createElement("span", null, skills.subject[0].score || 0)
                         ), 
                         React.createElement("div", {className: "u-cf"})
                     ), 
@@ -26488,7 +26554,7 @@ var CandidateCard = React.createClass({displayName: "CandidateCard",
                     ), 
                     React.createElement("div", {className: "candidate-extra"}, 
                         React.createElement("span", null, 
-                            React.createElement("i", {className: "icon-briefcase"}), " 2015/03"
+                            React.createElement("i", {className: "icon-briefcase"}), " ", registered[0], "/", registered[1]
                         ), " ~", 
                         React.createElement("span", null, 
                             React.createElement("i", {className: "icon-history"}), " 1 hour ago"
@@ -26499,8 +26565,10 @@ var CandidateCard = React.createClass({displayName: "CandidateCard",
         }.bind(this));
 
         return (
-            React.createElement("div", {id: "candidate-list", className: "row"}, 
-                 CandidateNode 
+            React.createElement("div", {id: "candidate-list"}, 
+                React.createElement("div", {className: "candidate-list"}, 
+                     CandidateNode 
+                )
             )
         );
     }
@@ -26610,12 +26678,16 @@ var Navigation = React.createClass({displayName: "Navigation",
     getInitialState: function () {
         return {
             fwDialog: {},
-            showSubMenu: false
+            showSubMenu: false,
+            totalCandidate: 0
         };
     },
     componentWillReceiveProps: function (nextProps) {
+        var totalCandidate = nextProps.total || 0;
+
         this.setState({
-            fwDialog: nextProps.fwDialog
+            fwDialog: nextProps.fwDialog,
+            totalCandidate: totalCandidate
         });
     },
     handleSearchButton: function() {
@@ -26639,10 +26711,10 @@ var Navigation = React.createClass({displayName: "Navigation",
                     React.createElement(ToolbarGroup, {className: "eight columns"}, 
                         React.createElement("div", {className: "search u-pull-left"}, 
                             React.createElement(FontIcon, {className: "icon-search", onClick: this.handleSearchButton}), 
-                            React.createElement("span", {className: "result-number"}, "4"), "文"
+                            React.createElement("span", {className: "result-number"}, this.state.totalCandidate), "文"
                         ), 
                         React.createElement("div", {className: "sort-order u-pull-right"}, 
-                            "䏦ふ: 韥 䛨じ"
+                            "並び順：新着順"
                         )
                     ), 
                     React.createElement(ToolbarGroup, {className: "four columns"}, 
@@ -26673,190 +26745,229 @@ var React = require('react'),
 
 var SearchForm = React.createClass({displayName: "SearchForm",
     getInitialState: function () {
+        var candidateAge = [];
+        for (var i = 18; i < 40; i++) {
+            candidateAge.push({payload: i, text: i + '以上'})
+        }
         return {
-            javaFrameworks: [
+            candidateGender: [
+                {
+                    payload: '0',
+                    text: '男性'
+                },
                 {
                     payload: '1',
-                    text: 'Struts 2'
+                    text: '女性'
                 },
                 {
-                    payload: '2',
-                    text: 'Hibernate'
-                },
-                {
-                    payload: '3',
-                    text: 'Spring MVC'
+                    payload: '0,1',
+                    text: '男性・女性'
                 }
             ],
-            jsFrameworks: [
+            academicBackground: [
                 {
-                    payload: '1',
-                    text: 'jQuery'
+                    payload: 'highschool',
+                    text: '高校卒業'
                 },
                 {
-                    payload: '2',
-                    text: 'AngularJS'
+                    payload: 'bachelor',
+                    text: '大学卒業'
                 },
                 {
-                    payload: '3',
-                    text: 'React JS'
+                    payload: 'master',
+                    text: '修士卒業'
+                },
+                {
+                    payload: 'doctor',
+                    text: '博士卒業'
                 }
             ],
-            slideAbc: 50
+            skillMaster: [
+                {
+                    payload: '10',
+                    text: '半年以下'
+                },
+                {
+                    payload: '30',
+                    text: '半年以上'
+                },
+                {
+                    payload: '50',
+                    text: '一年以上'
+                },
+                {
+                    payload: '70',
+                    text: '一年半以上'
+                },
+                {
+                    payload: '90',
+                    text: '2年以上'
+                }
+            ],
+            candidateAge: candidateAge,
+            sliderRefs: {
+                it_subject: 50,
+                logical: 50,
+                japanese: 50,
+                english: 50,
+                result_of_interview: 50,
+                work_experience: 50,
+                score: 500
+            }
         };
     },
-    onSlideChange: function() {
-        var myValue = this.refs.abc.getValue();
-        this.setState({
-            slideAbc: Math.round(myValue * 100)
-        })
+    onSlideChange: function(ref, _this, value) {
+        var cloneState = this.state;
+        cloneState.sliderRefs[ref] = Math.round(value * 100);
+        this.setState(cloneState);
     },
     render: function() {
         return (
             React.createElement("div", {className: "dialog-content row"}, 
                 React.createElement("div", {className: "columns six"}, 
                     React.createElement("div", {className: "section-title"}, 
-                        "IT - 大ぴちゅ窣栧"
+                        "基本条件"
                     ), 
                     React.createElement("div", {className: "form-search"}, 
                         React.createElement("div", {className: "programing-languages"}, 
                             React.createElement("div", null, 
-                                React.createElement("span", {className: "color-red"}, "Java"), 
+                                React.createElement("span", {className: "color-red"}, "年齢"), 
                                 React.createElement("p", null, 
-                                    React.createElement(DropDownMenu, {className: "form-dropdown", menuItems: this.state.javaFrameworks})
+                                    React.createElement(DropDownMenu, {className: "form-dropdown half", ref: "age_from", menuItems: this.state.candidateAge}), 
+                                    React.createElement(DropDownMenu, {className: "form-dropdown half", ref: "age_to", menuItems: this.state.candidateAge})
                                 )
                             ), 
                             React.createElement("div", null, 
-                                React.createElement("span", {className: "color-red"}, "JS"), 
+                                React.createElement("span", {className: "color-red"}, "性別"), 
                                 React.createElement("p", null, 
-                                    React.createElement(DropDownMenu, {className: "form-dropdown", menuItems: this.state.javaFrameworks})
+                                    React.createElement(DropDownMenu, {className: "form-dropdown", ref: "gender", menuItems: this.state.candidateGender})
                                 )
                             ), 
                             React.createElement("div", null, 
-                                React.createElement("span", {className: "color-red"}, "PHP Framework"), 
+                                React.createElement("span", {className: "color-red"}, "最終学歴"), 
                                 React.createElement("p", null, 
-                                    React.createElement(DropDownMenu, {className: "form-dropdown", menuItems: this.state.javaFrameworks})
+                                    React.createElement(DropDownMenu, {className: "form-dropdown", ref: "academic_background", menuItems: this.state.academicBackground})
                                 )
                             ), 
                             React.createElement("div", null, 
-                                React.createElement("span", {className: "color-red"}, "Date time"), 
+                                React.createElement("span", {className: "color-red"}, "就職可能日"), 
                                 React.createElement("p", null, 
-                                    React.createElement(DatePicker, {className: "form-datepicker"}), 
+                                    React.createElement(DatePicker, {className: "form-datepicker", ref: "working_start_at"}), 
                                     React.createElement(FontIcon, {className: "icon-calendar"})
                                 )
                             ), 
                             React.createElement("div", null, 
-                                React.createElement("span", {className: "color-red"}, "Slide"), 
+                                React.createElement("span", {className: "color-red"}, "スコア"), 
                                 React.createElement("div", {className: "row form-slider"}, 
-                                    React.createElement("div", {className: "four columns"}, "500~"), 
+                                    React.createElement("div", {className: "four columns"}, this.state.sliderRefs.score, "~"), 
                                     React.createElement("div", {className: "eight columns"}, 
-                                        React.createElement(Slider, {defaultValue: .5})
+                                        React.createElement(Slider, {defaultValue: 5, ref: "score", max: "10", onChange: this.onSlideChange.bind(this, 'score')})
                                     )
                                 )
                             )
                         )
                     ), 
                     React.createElement("div", {className: "section-title"}, 
-                        "IT - 大ぴちゅ窣栧"
+                        "表示条件"
                     ), 
                     React.createElement("div", {className: "form-search"}, 
                         React.createElement("div", {className: "programing-languages"}, 
                             React.createElement("div", null, 
-                                React.createElement("span", {className: "color-red"}, "Java"), 
+                                React.createElement("span", {className: "color-red"}, "ブックマーク状況"), 
                                 React.createElement("p", null, 
-                                    React.createElement(Checkbox, {name: "cbbOne", value: "1", label: "lorem ipsum dolor"}), 
-                                    React.createElement(Checkbox, {name: "cbbOne", value: "1", label: "lorem ipsum dolor"})
+                                    React.createElement(Checkbox, {name: "cbbOne", value: "1", label: "ブックマークのみ"}), 
+                                    React.createElement(Checkbox, {name: "cbbOne", value: "1", label: "ブックマークなし"})
                                 )
                             )
                         )
                     ), 
                     React.createElement("div", {className: "section-title"}, 
-                        "Tags"
+                        "タグ"
                     ), 
                     React.createElement("div", {className: "form-search"}, 
                         React.createElement("div", {className: "programing-languages"}, 
                             React.createElement("div", null, 
-                                React.createElement(TextField, {className: "form-textfield", hintText: "JS, ReactJS, ..."})
+                                React.createElement(TextField, {className: "form-textfield", ref: "tags", hintText: "タグを選択"})
                             )
                         )
                     )
                 ), 
                 React.createElement("div", {className: "columns six"}, 
                     React.createElement("div", {className: "section-title"}, 
-                        "IT - 大ぴちゅ窣栧"
+                        "ITスキル・経験・成績"
                     ), 
                     React.createElement("div", {className: "form-search"}, 
                         React.createElement("div", {className: "programing-languages"}, 
                             React.createElement("p", {className: "sub-section-title"}, 
-                                React.createElement("span", {className: "color-red"}, "Lorem ipsum")
+                                React.createElement("span", {className: "color-red"}, "基本科目")
                             ), 
                             React.createElement("div", null, 
-                                React.createElement("span", null, "Slide"), 
+                                React.createElement("span", null, "日本語"), 
                                 React.createElement("div", {className: "row form-slider"}, 
-                                    React.createElement("div", {className: "four columns color-red"}, "獤䦪ち"), 
+                                    React.createElement("div", {className: "four columns color-red"}, this.state.sliderRefs.japanese, "以上"), 
                                     React.createElement("div", {className: "eight columns"}, 
-                                        React.createElement(Slider, {defaultValue: .5})
+                                        React.createElement(Slider, {defaultValue: .5, ref: "japanese", onChange: this.onSlideChange.bind(this, 'japanese')})
                                     )
                                 )
                             ), 
                             React.createElement("div", null, 
-                                React.createElement("span", null, "Slide"), 
+                                React.createElement("span", null, "英語"), 
                                 React.createElement("div", {className: "row form-slider"}, 
-                                    React.createElement("div", {className: "four columns color-red"}, "獤䦪ち"), 
+                                    React.createElement("div", {className: "four columns color-red"}, this.state.sliderRefs.english, "以上"), 
                                     React.createElement("div", {className: "eight columns"}, 
-                                        React.createElement(Slider, {defaultValue: .5})
+                                        React.createElement(Slider, {defaultValue: .5, ref: "english", onChange: this.onSlideChange.bind(this, 'english')})
                                     )
                                 )
                             ), 
                             React.createElement("div", null, 
-                                React.createElement("span", null, "Slide"), 
+                                React.createElement("span", null, "IT科目"), 
                                 React.createElement("div", {className: "row form-slider"}, 
-                                    React.createElement("div", {className: "four columns color-red"}, "~", this.state.slideAbc), 
+                                    React.createElement("div", {className: "four columns color-red"}, this.state.sliderRefs.it_subject, "以上"), 
                                     React.createElement("div", {className: "eight columns"}, 
-                                        React.createElement(Slider, {defaultValue: .5, ref: "abc", name: "abc", onChange: this.onSlideChange.bind()})
+                                        React.createElement(Slider, {defaultValue: .5, ref: "it_subject", onChange: this.onSlideChange.bind(this, 'it_subject')})
                                     )
                                 )
                             ), 
                             React.createElement("div", null, 
-                                React.createElement("span", null, "Slide"), 
+                                React.createElement("span", null, "論理"), 
                                 React.createElement("div", {className: "row form-slider"}, 
-                                    React.createElement("div", {className: "four columns color-red"}, "獤䦪ち"), 
+                                    React.createElement("div", {className: "four columns color-red"}, this.state.sliderRefs.logical, "以上"), 
                                     React.createElement("div", {className: "eight columns"}, 
-                                        React.createElement(Slider, {defaultValue: .5})
+                                        React.createElement(Slider, {defaultValue: .5, ref: "logical", onChange: this.onSlideChange.bind(this, 'logical')})
                                     )
                                 )
                             ), 
                             React.createElement("div", null, 
-                                React.createElement("span", null, "Slide"), 
+                                React.createElement("span", null, "面談評価"), 
                                 React.createElement("div", {className: "row form-slider"}, 
-                                    React.createElement("div", {className: "four columns color-red"}, "獤䦪ち"), 
+                                    React.createElement("div", {className: "four columns color-red"}, this.state.sliderRefs.result_of_interview, "以上"), 
                                     React.createElement("div", {className: "eight columns"}, 
-                                        React.createElement(Slider, {defaultValue: .5})
+                                        React.createElement(Slider, {defaultValue: .5, ref: "result_of_interview", onChange: this.onSlideChange.bind(this, 'result_of_interview')})
                                     )
                                 )
                             ), 
                             React.createElement("div", null, 
-                                React.createElement("span", null, "Slide"), 
+                                React.createElement("span", null, "職業経験"), 
                                 React.createElement("div", {className: "row form-slider"}, 
-                                    React.createElement("div", {className: "four columns color-red"}, "獤䦪ち"), 
+                                    React.createElement("div", {className: "four columns color-red"}, this.state.sliderRefs.work_experience, "以上"), 
                                     React.createElement("div", {className: "eight columns"}, 
-                                        React.createElement(Slider, {defaultValue: .5})
+                                        React.createElement(Slider, {defaultValue: .5, ref: "work_experience", onChange: this.onSlideChange.bind(this, 'work_experience')})
                                     )
                                 )
                             ), 
 
                             React.createElement("p", {className: "sub-section-title"}, 
-                                React.createElement("span", {className: "color-red"}, "dolor sit amet")
+                                React.createElement("span", {className: "color-red"}, "基本科目")
                             ), 
                             React.createElement("div", null, 
-                                React.createElement(TextField, {className: "form-textfield", hintText: "JS, ReactJS, ..."})
+                                React.createElement(TextField, {className: "form-textfield", ref: "skills", hintText: "JS, ReactJS, ..."})
                             ), 
                             React.createElement("div", {class: "row"}, 
                                 React.createElement("div", {className: "seven columns"}, 
                                     React.createElement(Checkbox, {name: "cbbOne", value: "1", label: "Java"})
                                 ), 
                                 React.createElement("div", {className: "five columns"}, 
-                                    React.createElement(DropDownMenu, {className: "form-dropdown", menuItems: this.state.javaFrameworks})
+                                    React.createElement(DropDownMenu, {className: "form-dropdown", menuItems: this.state.skillMaster})
                                 )
                             ), 
                             React.createElement("div", {class: "row"}, 
@@ -26864,7 +26975,7 @@ var SearchForm = React.createClass({displayName: "SearchForm",
                                     React.createElement(Checkbox, {name: "cbbOne", value: "1", label: "Java"})
                                 ), 
                                 React.createElement("div", {className: "five columns"}, 
-                                    React.createElement(DropDownMenu, {className: "form-dropdown", menuItems: this.state.javaFrameworks})
+                                    React.createElement(DropDownMenu, {className: "form-dropdown", menuItems: this.state.skillMaster})
                                 )
                             )
                         )
@@ -26888,7 +26999,14 @@ var SubMenu = React.createClass({displayName: "SubMenu",
         var candidates = this.props.candidates || [];
         var isShow = this.props.show || false;
         var className = "candidate-submenu ";
+        var gridWidth = $('.candidate-list').width();
         className += isShow ? "showSubMenu" : "hideSubMenu";
+        if (isShow) {
+            $('#candidate-list').width(gridWidth - 256);
+        } else {
+            $('#candidate-list').css('width', 'auto');
+        }
+        $(window).trigger('resize');
 
         var Candidate = candidates.map(function(data, idx) {
             var candidatePic = {

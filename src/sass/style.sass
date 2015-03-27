@@ -111,7 +111,8 @@ div.section-title
                 weight: bold
                 size: 1.2rem
 
-
+#candidate-list
+    position: relative
 #candidate-list,
 #full-width-dialog
     padding: 2rem 1rem
@@ -124,7 +125,7 @@ div.section-title
         width: 25.6rem
         cursor: pointer
         padding: 1rem 0
-        position: relative
+        position: absolute
         .candidate-
             &picture
                 background:
@@ -263,11 +264,14 @@ div.section-title
         >span
             line-height: 2.2rem
             cursor: pointer
+    .candidate-card
+        position: static
     .dialog-content
         padding: 1rem
         position: relative
         height: 96%
         overflow: auto
+        overflow-x: hidden
 
         .in-dialog
             margin-top: 0
@@ -310,6 +314,9 @@ div.section-title
                     margin: 0 .5rem
         .form-search
             @extend .candidate-addition-info
+            .half
+                max-width: 24% !important
+                width: 24% !important
             .form-dropdown
                 height: 2.6rem
                 max-width: 60%
@@ -363,20 +370,19 @@ div.section-title
                 color: $grey-900
 
 .fadeInDown
-    +animation(fadeInDown 1s ease 0s both)
+    +animation(fadeInDown 1s ease 0s forwards)
     visibility: visible !important
 
 .fadeOutUp
-    +animation(fadeOutUp 1s ease 0s both)
-    visibility: visible !important
+    +animation(fadeOutUp 1s ease 0s forwards)
+    visibility: hidden !important
 .showSubMenu
+    visibility: visible !important
     +transition(.5s)
     right: 0% !important
 .hideSubMenu
     +transition(opacity 1s ease-out)
     +opacity(0)
-    // right: -256px
-    // display: none
 
 +keyframes(fadeInDown)
     0%
@@ -392,3 +398,4 @@ div.section-title
     100%
         +opacity(0)
         +transform(translateY(-2rem))
+        visibility: hidden

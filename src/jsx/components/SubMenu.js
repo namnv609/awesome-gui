@@ -8,7 +8,14 @@ var SubMenu = React.createClass({
         var candidates = this.props.candidates || [];
         var isShow = this.props.show || false;
         var className = "candidate-submenu ";
+        var gridWidth = $('.candidate-list').width();
         className += isShow ? "showSubMenu" : "hideSubMenu";
+        if (isShow) {
+            $('#candidate-list').width(gridWidth - 256);
+        } else {
+            $('#candidate-list').css('width', 'auto');
+        }
+        $(window).trigger('resize');
 
         var Candidate = candidates.map(function(data, idx) {
             var candidatePic = {

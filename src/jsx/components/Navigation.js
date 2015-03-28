@@ -40,6 +40,7 @@ var Navigation = React.createClass({
     },
     handleSearchButton: function() {
         this.state.fwDialog.props.component = <SearchForm />
+        this.state.fwDialog.props.showButton = true;
         this.state.fwDialog.openDialog();
     },
     handleMenuButton: function() {
@@ -59,7 +60,7 @@ var Navigation = React.createClass({
                     <ToolbarGroup className="eight columns">
                         <div className="search u-pull-left">
                             <FontIcon className="icon-search" onClick={this.handleSearchButton} />
-                            <span className="result-number">{this.state.totalCandidate}</span>文
+                            <span className="result-number">{this.state.totalCandidate}</span>人
                         </div>
                         <div className="sort-order u-pull-right">
                             並び順：新着順

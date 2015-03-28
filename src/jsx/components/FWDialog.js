@@ -2,6 +2,7 @@
 
 var React = require('react'),
     mui = require('material-ui'),
+    FlatButton = mui.FlatButton,
     SearchForm = require('./SearchForm');
 
 var FWDialog = React.createClass({
@@ -27,6 +28,7 @@ var FWDialog = React.createClass({
         var className = "u-full-width";
         var isShow = this.state.show || null;
         var component = this.props.component || null;
+        console.log(this.props);
 
         if (this.state.show !== null) {
             className += isShow ? " fadeInDown" : " fadeOutUp";
@@ -35,7 +37,7 @@ var FWDialog = React.createClass({
         return (
             <div id="full-width-dialog" className={className}>
                 <div className="dialog-title">
-                    {dialogTitle}
+                    {this.props.showButton ? <FlatButton label="Search" /> : ""} {dialogTitle}
                     <span className="u-pull-right" onClick={this.closeDialog}>
                         <i className="icon-cross"></i>
                     </span>

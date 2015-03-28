@@ -243,11 +243,10 @@ div.section-title
 #full-width-dialog
     position: fixed
     background: $grey-50
-    top: 0
+    top: 13rem
     right: 0
     bottom: 0
     left: 0
-    width: 96rem
     margin: auto
     z-index: 10000
     padding: 0
@@ -272,6 +271,8 @@ div.section-title
         height: 96%
         overflow: auto
         overflow-x: hidden
+        width: 96rem
+        margin: 0 auto
 
         .in-dialog
             margin-top: 0
@@ -365,6 +366,21 @@ div.section-title
                         padding: 0
                         &:focus
                             border: 0
+
+                &taggable
+                    span
+                        min-width: 0 !important
+                        max-width: none !important
+                    .Select-
+                        &control
+                            border: 0
+                            border-bottom: 1px solid $grey-300
+                            +border-radius(0)
+                        &item,
+                            margin: 2px
+                            &-label,
+                            &-icon
+                                color: $red-500
             .icon-calendar
                 font-size: 1.2rem
                 color: $grey-900

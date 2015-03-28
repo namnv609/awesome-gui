@@ -5,15 +5,111 @@ var React = require('react'),
     Slider = mui.Slider,
     FontIcon = mui.FontIcon,
     Checkbox = mui.Checkbox,
-    TextField = mui.TextField;
+    TextField = mui.TextField,
+    ReactSelect = require('react-select');
 
+var SkillElement = React.createClass({
+    getInitialState: function () {
+        return {
+            checkbox: ''  
+        };
+    },
+    onCheckboxChange: function(_this, isChecked) {
+        var checkboxObject = this.state.checkbox;
+        var optionObj = {
+            label: checkboxObject.label,
+            value: checkboxObject.value
+        };
 
+        if (isChecked === false) {
+            var $checkbox = $(this.getDOMNode()).closest('[data-time]');
+            $checkbox.fadeOut(function() {
+                $(this).remove();
+            });
+
+            checkboxObject.func('add', optionObj);
+        }
+    },
+    componentDidMount: function () {
+        this.setState({
+            checkbox: this.props
+        });
+    },
+    render: function() {
+        var skillMaster = [
+            {
+                payload: '10',
+                text: '半年以下'
+            },
+            {
+                payload: '30',
+                text: '半年以上'
+            },
+            {
+                payload: '50',
+                text: '一年以上'
+            },
+            {
+                payload: '70',
+                text: '一年半以上'
+            },
+            {
+                payload: '90',
+                text: '2年以上'
+            }
+        ];
+        return (
+            <div class="row">
+                <div className="seven columns">
+                    <Checkbox name="cbbOne" defaultSwitched={true} onCheck={this.onCheckboxChange} value={this.props.value} label={this.props.label} />
+                </div>
+                <div className="five columns">
+                    <DropDownMenu className="form-dropdown" menuItems={skillMaster} />
+                </div>
+            </div>
+        );
+    }
+});
 
 var SearchForm = React.createClass({
+    callAPI: function(apiURL, stateName) {
+        var _state = this.state;
+
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: apiURL,
+            success: function(response) {
+                _state[stateName] = response.skills;
+                this.setState(_state);
+            }.bind(this),
+            error: function(xhr, ao, error) {
+                console.log(error);
+            }.bind(this)
+        });
+    },
+    addOrRemoveSkill: function(action, value) {
+        var skills = this.state.skillList || [];
+        if (action === "remove") {
+            skills.forEach(function(skill, idx) {
+                if (skill['value'] === value) {
+                    skills.splice(idx, 1);
+                    return true;
+                }
+            });
+        } else {
+            skills.push(value);
+        }
+
+        console.log(this.state.tagsList);
+    },
     getInitialState: function () {
-        var candidateAge = [];
+        var candidateMinAge = [];
+        var candidateMaxAge = [];
+
         for (var i = 18; i < 40; i++) {
-            candidateAge.push({payload: i, text: i + '以上'})
+            candidateMinAge.push({payload: i, text: i + '以上'});
+            candidateMaxAge.push({payload: i, text: i + '以下'});
         }
         return {
             candidateGender: [
@@ -48,29 +144,8 @@ var SearchForm = React.createClass({
                     text: '博士卒業'
                 }
             ],
-            skillMaster: [
-                {
-                    payload: '10',
-                    text: '半年以下'
-                },
-                {
-                    payload: '30',
-                    text: '半年以上'
-                },
-                {
-                    payload: '50',
-                    text: '一年以上'
-                },
-                {
-                    payload: '70',
-                    text: '一年半以上'
-                },
-                {
-                    payload: '90',
-                    text: '2年以上'
-                }
-            ],
-            candidateAge: candidateAge,
+            candidateMinAge: candidateMinAge,
+            candidateMaxAge: candidateMaxAge,
             sliderRefs: {
                 it_subject: 50,
                 logical: 50,
@@ -79,13 +154,25 @@ var SearchForm = React.createClass({
                 result_of_interview: 50,
                 work_experience: 50,
                 score: 500
-            }
+            },
+            tagsList: [],
+            skillList: []
         };
+    },
+    componentDidMount: function () {
+        this.callAPI('api/candidates.php?action=skills', 'tagsList');
+        this.callAPI('api/candidates.php?action=skills', 'skillList');
     },
     onSlideChange: function(ref, _this, value) {
         var cloneState = this.state;
         cloneState.sliderRefs[ref] = Math.round(value * 100);
         this.setState(cloneState);
+    },
+    onSelectSkill: function(value, optionObj) {
+        var currentTime = new Date().getTime();
+        $(".skill-exp").append('<div data-time="' + currentTime + '"></div>');
+        React.renderComponent(<SkillElement label={optionObj[0].label} value={value} func={this.addOrRemoveSkill} />, $(".skill-exp [data-time='" + currentTime + "']")[0]);
+        this.addOrRemoveSkill('remove', optionObj[0].value);
     },
     render: function() {
         return (
@@ -99,8 +186,8 @@ var SearchForm = React.createClass({
                             <div>
                                 <span className="color-red">年齢</span>
                                 <p>
-                                    <DropDownMenu className="form-dropdown half" ref="age_from" menuItems={this.state.candidateAge} />
-                                    <DropDownMenu className="form-dropdown half" ref="age_to" menuItems={this.state.candidateAge} />
+                                    <DropDownMenu className="form-dropdown half" ref="age_from" menuItems={this.state.candidateMinAge} />
+                                    <DropDownMenu className="form-dropdown half" ref="age_to" menuItems={this.state.candidateMaxAge} />
                                 </p>
                             </div>
                             <div>
@@ -127,7 +214,7 @@ var SearchForm = React.createClass({
                                 <div className="row form-slider">
                                     <div className="four columns">{this.state.sliderRefs.score}~</div>
                                     <div className="eight columns">
-                                        <Slider defaultValue={5} ref="score" max="10" onChange={this.onSlideChange.bind(this, 'score')} />
+                                        <Slider defaultValue={5} ref="score" max={10} onChange={this.onSlideChange.bind(this, 'score')} />
                                     </div>
                                 </div>
                             </div>
@@ -153,7 +240,7 @@ var SearchForm = React.createClass({
                     <div className="form-search">
                         <div className="programing-languages">
                             <div>
-                                <TextField className="form-textfield" ref="tags"  hintText="タグを選択" />
+                                <ReactSelect className="form-taggable" placeholder="タグを選択" options={this.state.tagsList} multi={true} />
                             </div>
                         </div>
                     </div>
@@ -226,23 +313,14 @@ var SearchForm = React.createClass({
                                 <span className="color-red">基本科目</span>
                             </p>
                             <div>
-                                <TextField className="form-textfield" ref="skills" hintText="JS, ReactJS, ..." />
+                                <ReactSelect
+                                    className="form-taggable"
+                                    options={this.state.skillList}
+                                    searchable={false}
+                                    onChange={this.onSelectSkill}
+                                />
                             </div>
-                            <div class="row">
-                                <div className="seven columns">
-                                    <Checkbox name="cbbOne" value="1" label="Java" />
-                                </div>
-                                <div className="five columns">
-                                    <DropDownMenu className="form-dropdown" menuItems={this.state.skillMaster} />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div className="seven columns">
-                                    <Checkbox name="cbbOne" value="1" label="Java" />
-                                </div>
-                                <div className="five columns">
-                                    <DropDownMenu className="form-dropdown" menuItems={this.state.skillMaster} />
-                                </div>
+                            <div className="skill-exp">
                             </div>
                         </div>
                     </div>

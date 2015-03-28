@@ -260,11 +260,10 @@ div.section-title {
 #full-width-dialog {
   position: fixed;
   background: #fafafa;
-  top: 0;
+  top: 13rem;
   right: 0;
   bottom: 0;
   left: 0;
-  width: 96rem;
   margin: auto;
   z-index: 10000;
   padding: 0;
@@ -290,7 +289,9 @@ div.section-title {
     position: relative;
     height: 96%;
     overflow: auto;
-    overflow-x: hidden; }
+    overflow-x: hidden;
+    width: 96rem;
+    margin: 0 auto; }
     #full-width-dialog .dialog-content .in-dialog {
       margin-top: 0;
       border-bottom: 0; }
@@ -389,6 +390,19 @@ div.section-title {
       padding: 0; }
       #full-width-dialog .dialog-content .form-search .form-textfield input[type=text]:focus {
         border: 0; }
+    #full-width-dialog .dialog-content .form-search .form-taggable span {
+      min-width: 0 !important;
+      max-width: none !important; }
+    #full-width-dialog .dialog-content .form-search .form-taggable .Select-control {
+      border: 0;
+      border-bottom: 1px solid #e0e0e0;
+      -moz-border-radius: 0;
+      -webkit-border-radius: 0;
+      border-radius: 0; }
+    #full-width-dialog .dialog-content .form-search .form-taggable .Select-item {
+      margin: 2px; }
+      #full-width-dialog .dialog-content .form-search .form-taggable .Select-item-label, #full-width-dialog .dialog-content .form-search .form-taggable .Select-item-icon {
+        color: #f44336; }
     #full-width-dialog .dialog-content .form-search .icon-calendar {
       font-size: 1.2rem;
       color: #212121; }
